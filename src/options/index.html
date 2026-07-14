@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>单词本管理 - wordmark</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>wordmark</h1>
+    </header>
+
+    <section class="section">
+      <h2>单词本</h2>
+      <div class="toolbar">
+        <input type="text" id="search-input" placeholder="搜索单词..." />
+        <div class="toolbar-actions">
+          <button id="import-btn">导入</button>
+          <button id="export-btn">导出</button>
+        </div>
+      </div>
+      <div class="word-count" id="word-count">共 0 词</div>
+      <ul id="vocab-list"></ul>
+    </section>
+
+    <section class="section">
+      <h2>站点设置</h2>
+      <div class="setting-group">
+        <label for="whitelist-input">白名单（仅在这些站点生效）</label>
+        <div class="domain-row">
+          <input type="text" id="whitelist-input" placeholder="example.com" />
+          <button id="whitelist-add-btn">添加</button>
+        </div>
+        <ul id="whitelist-list" class="domain-list"></ul>
+      </div>
+      <div class="setting-group">
+        <label for="blacklist-input">黑名单（在这些站点不生效）</label>
+        <div class="domain-row">
+          <input type="text" id="blacklist-input" placeholder="example.com" />
+          <button id="blacklist-add-btn">添加</button>
+        </div>
+        <ul id="blacklist-list" class="domain-list"></ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>快捷键</h2>
+      <p class="shortcut-info"><kbd>Alt</kbd> + <kbd>W</kbd> 切换当前页替换状态</p>
+    </section>
+  </div>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

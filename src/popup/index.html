@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wordmark</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>wordmark</h1>
+      <span class="badge" id="word-count">0</span>
+    </header>
+    <main>
+      <div class="stats">
+        本页命中：<span id="match-count">0</span> 词
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="global-toggle" />
+        <span class="slider"></span>
+        <span class="label-text">全局替换</span>
+      </label>
+
+      <div id="empty-state" class="empty-state hidden">
+        <p>单词本为空</p>
+        <button id="import-sample-btn">导入示例词库</button>
+      </div>
+
+      <div class="actions">
+        <button id="manage-btn">管理单词本</button>
+        <div class="action-row">
+          <button id="import-btn">导入</button>
+          <button id="export-btn">导出</button>
+        </div>
+        <button id="test-page-btn" class="secondary">打开测试页（仅该页生效）</button>
+      </div>
+    </main>
+
+    <input type="file" id="file-input" accept=".json,.csv" hidden />
+    <a id="download-link" hidden></a>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
