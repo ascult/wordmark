@@ -1,6 +1,5 @@
 const STORAGE_KEY = "_wm_segment_cache";
 const MAX_ENTRIES = 500;
-const CACHE_TTL = 24 * 60 * 60 * 1000;
 
 interface CacheEntry {
   zhText: string;
@@ -14,57 +13,46 @@ async function loadCache(): Promise<void> {
   if (loaded) return;
   const raw = await chrome.storage.local.get(STORAGE_KEY);
   const stored: Record<string, CacheEntry> = raw[STORAGE_KEY] ?? {};
-  const now = Date.now();
-  let expired = 0;
   for (const [key, entry] of Object.entries(stored)) {
-    if (now - entry.timestamp < CACHE_TTL) {
-      cacheMap.set(key, entry);
-    } else {
-      expired++;
-    }
+    cacheMap.set(key, entry);
   }
   loaded = true;
-  if (expired > 0) await pruneStorage();
+  if (cacheMap.size > MAX_ENTRIES) await evict();
 }
 
-async function persistCache(): Promise<void> {
+async function persist(): Promise<void> {
   const stored: Record<string, CacheEntry> = {};
-  const entries = [...cacheMap.entries()].slice(-MAX_ENTRIES);
+  const entries = [...cacheMap.entries()];
   for (const [key, entry] of entries) {
     stored[key] = entry;
   }
   await chrome.storage.local.set({ [STORAGE_KEY]: stored });
 }
 
-async function pruneStorage(): Promise<void> {
-  const now = Date.now();
-  for (const [key, entry] of cacheMap) {
-    if (now - entry.timestamp >= CACHE_TTL) cacheMap.delete(key);
+async function evict(): Promise<void> {
+  while (cacheMap.size > MAX_ENTRIES) {
+    let oldestKey = "";
+    let oldestTime = Infinity;
+    for (const [key, entry] of cacheMap) {
+      if (entry.timestamp < oldestTime) {
+        oldestTime = entry.timestamp;
+        oldestKey = key;
+      }
+    }
+    if (oldestKey) cacheMap.delete(oldestKey);
   }
-  if (cacheMap.size > MAX_ENTRIES) {
-    const oldest = [...cacheMap.entries()]
-      .sort((a, b) => a[1].timestamp - b[1].timestamp)
-      .slice(0, cacheMap.size - MAX_ENTRIES);
-    for (const [key] of oldest) cacheMap.delete(key);
-  }
-  await persistCache();
+  await persist();
 }
 
 export async function getCached(segHash: string): Promise<string | undefined> {
   await loadCache();
   const entry = cacheMap.get(segHash);
-  if (!entry) return undefined;
-  if (Date.now() - entry.timestamp >= CACHE_TTL) {
-    cacheMap.delete(segHash);
-    await persistCache();
-    return undefined;
-  }
-  return entry.zhText;
+  return entry?.zhText;
 }
 
 export async function setCached(segHash: string, zhText: string): Promise<void> {
   await loadCache();
   cacheMap.set(segHash, { zhText, timestamp: Date.now() });
-  if (cacheMap.size > MAX_ENTRIES + 50) await pruneStorage();
-  else await persistCache();
+  if (cacheMap.size > MAX_ENTRIES) await evict();
+  else await persist();
 }
