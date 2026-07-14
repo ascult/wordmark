@@ -1,5 +1,6 @@
 import { bingTranslate } from "./bing.js";
 import { lookup } from "../common/dict.js";
+import { getCached, setCached } from "./cache.js";
 import {
   splitSentences,
   buildWordSentenceMap,
@@ -14,10 +15,7 @@ export async function translate(word: string): Promise<string> {
 }
 
 const CONCURRENCY = 3;
-const CACHE_TTL = 60 * 60 * 1000;
 const MAX_EMPTY_STREAK = 3;
-
-const segmentCache = new Map<string, { zhText: string; timestamp: number }>();
 
 function hashSegment(text: string): string {
   let hash = 0;
@@ -121,10 +119,10 @@ async function translateSegment(
     : segment;
 
   const segHash = hashSegment(text);
-  const cached = segmentCache.get(segHash);
+  const cached = await getCached(segHash);
   let chinesePage: string;
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    chinesePage = cached.zhText;
+  if (cached) {
+    chinesePage = cached;
   } else {
     try {
       chinesePage = await bingTranslate(text);
@@ -132,7 +130,7 @@ async function translateSegment(
       return {};
     }
     if (!chinesePage) return {};
-    segmentCache.set(segHash, { zhText: chinesePage, timestamp: Date.now() });
+    await setCached(segHash, chinesePage);
   }
 
   const enSentences = splitSentences(text);
