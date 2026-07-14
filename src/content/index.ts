@@ -83,7 +83,7 @@ async function fetchBatchDefinitions(
     });
     if (result?.definitions) {
       for (const [word, def] of Object.entries(result.definitions)) {
-        if (typeof def === "string") updateAnnotation(word, def);
+        if (typeof def === "string" && def) updateAnnotation(word, def);
       }
     }
   } catch {

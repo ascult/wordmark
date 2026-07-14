@@ -67,11 +67,11 @@ export async function batchTranslate(
   for (const word of words) {
     if (!result[word]) {
       const entry = lookup(word);
-      result[word] = entry?.cn[0] ?? entry?.def ?? "";
+      if (entry) result[word] = entry.cn[0] ?? entry.def;
     }
     if (result[word] && result[word].length > 12) {
       const entry = lookup(word);
-      result[word] = entry?.cn[0] ?? entry?.def ?? "";
+      if (entry) result[word] = entry.cn[0] ?? entry.def;
     }
   }
 
