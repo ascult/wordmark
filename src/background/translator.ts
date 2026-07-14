@@ -71,9 +71,39 @@ export async function batchTranslate(
       const entry = lookup(word);
       result[word] = entry?.cn[0] ?? entry?.def ?? "";
     }
+    if (result[word] && result[word].length > 12) {
+      const entry = lookup(word);
+      result[word] = entry?.cn[0] ?? entry?.def ?? "";
+    }
   }
 
   return result;
+}
+
+function pickPositionWord(
+  enWord: string,
+  enSentence: string,
+  zhSentence: string
+): string | undefined {
+  const enLower = enWord.toLowerCase();
+  const enTokens = enSentence.toLowerCase().split(/\s+/);
+  let wordIdx = -1;
+  for (let i = 0; i < enTokens.length; i++) {
+    if (enTokens[i] === enLower || enTokens[i].startsWith(enLower)) {
+      wordIdx = i;
+      break;
+    }
+  }
+  if (wordIdx < 0) return undefined;
+
+  const clean = zhSentence.replace(/[，。！？、；：""''（）《》【】\s]/g, "");
+  if (clean.length === 0) return undefined;
+
+  const ratio = wordIdx / enTokens.length;
+  const estPos = Math.round(ratio * clean.length);
+  const start = Math.max(0, estPos - 1);
+  const end = Math.min(clean.length, start + 3);
+  return clean.slice(start, end);
 }
 
 async function translateSegment(
@@ -127,8 +157,9 @@ async function translateSegment(
       }
     } else if (entry?.cn.length) {
       result[word] = entry.cn[0];
-    } else {
-      result[word] = zhSentence;
+    } else if (enSentence) {
+      const slice = pickPositionWord(word, enSentence, zhSentence);
+      if (slice) result[word] = slice;
     }
   }
 
