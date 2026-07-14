@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wordmark Test Page</title>
+  <style>
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      line-height: 1.7;
+      color: #333;
+    }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .subtitle { color: #888; font-size: 13px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 24px 0 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 4px; }
+    textarea, input, pre, .skip-test { border: 1px solid #ddd; padding: 8px; border-radius: 4px; }
+    textarea { width: 100%; height: 80px; }
+    .note { font-size: 12px; color: #999; margin-top: 4px; }
+    pre { background: #f5f5f5; overflow-x: auto; }
+    .skip-test { background: #fff3cd; display: inline-block; }
+    hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+  </style>
+</head>
+<body>
+
+<h1>wordmark Test Page</h1>
+<p class="subtitle">Use this page to test the replacement engine. 先导入示例词库（200 词），然后在 Popup 中开启全局替换。</p>
+
+<h2>1. Basic words (should be replaced)</h2>
+<p>The student needs to <strong>achieve</strong> a good result. She must <strong>adapt</strong> to the new environment and <strong>adjust</strong> her study habits. The teacher will <strong>evaluate</strong> her progress and <strong>provide</strong> helpful feedback.</p>
+<p>It is <strong>crucial</strong> to <strong>maintain</strong> a <strong>consistent</strong> routine. The <strong>outcome</strong> will <strong>determine</strong> the next steps. We need to <strong>establish</strong> a <strong>stable</strong> system that can <strong>function</strong> <strong>independent</strong>ly.</p>
+
+<h2>2. Inflection variants (look → looks, looked, looking)</h2>
+<p>I <strong>look</strong> at the board. He <strong>looks</strong> at the clock. Yesterday she <strong>looked</strong> tired. They are <strong>looking</strong> for solutions. Everyone <strong>looks</strong> forward to the weekend. She had <strong>looked</strong> everywhere before finding it.</p>
+
+<h2>3. More inflections (study, change, provide, create, use)</h2>
+<p>I <strong>study</strong> every day. He <strong>studies</strong> at the library. She <strong>studied</strong> all night. They are <strong>studying</strong> together. We need to <strong>change</strong> our approach. The weather <strong>changes</strong> quickly. She <strong>changed</strong> her mind. Things are <strong>changing</strong> fast.</p>
+<p>They <strong>provide</strong> useful resources. The company <strong>provides</strong> training. It <strong>provided</strong> great value. We are <strong>providing</strong> support. Artists <strong>create</strong> beautiful works. She <strong>creates</strong> innovative designs. He <strong>created</strong> a masterpiece. We are <strong>creating</strong> something new.</p>
+<p>I <strong>use</strong> this tool. He <strong>uses</strong> a different method. She <strong>used</strong> the old version. They are <strong>using</strong> the latest approach.</p>
+
+<h2>4. Plurals and possessives</h2>
+<p>The <strong>community</strong> has many <strong>communities</strong>. The <strong>barrier</strong> was removed. Multiple <strong>barriers</strong> remain. The <strong>category</strong> includes several <strong>categories</strong>. The <strong>strategy</strong> and <strong>strategies</strong> need review. We analyzed the <strong>phenomenon</strong> and related <strong>phenomena</strong>.</p>
+
+<h2>5. Words not in vocab (should NOT be replaced)</h2>
+<p>The <strong>banana</strong> is yellow. I like <strong>pizza</strong> with cheese. The <strong>elephant</strong> is huge. She drives a <strong>motorcycle</strong>. The <strong>rainbow</strong> has seven colors. This is a <strong>nebuchadnezzar</strong> — a word unlikely to be in anyone's vocabulary list.</p>
+
+<h2>6. Substring test (should NOT match substrings)</h2>
+<p>pineapple (should not match "apple"), looking glass (should match "look" variants but not "king"), nonetheless, undertake, overcome, widespread.</p>
+
+<h2>7. Elements that should be SKIPPED</h2>
+
+<p class="note">7a. Text inside &lt;textarea&gt; — should NOT be replaced:</p>
+<textarea>This textarea contains words like achieve, adapt, benefit, community. They should NOT be replaced.</textarea>
+
+<p class="note">7b. Text inside &lt;input&gt; — should NOT be replaced:</p>
+<input type="text" value="challenge response strategy" style="width:100%;" />
+
+<p class="note">7c. Text inside &lt;script&gt; — should NOT be replaced:</p>
+<pre>&lt;script&gt;
+  var result = achieve + benefit + challenge;
+  function process(strategy) { return strategy; }
+&lt;/script&gt;</pre>
+
+<p class="note">7d. Text with visibility: hidden — should NOT be replaced:</p>
+<div style="visibility: hidden;">This text contains achieve, benefit, and challenge but should remain hidden.</div>
+
+<h2>8. Mixed content (some replacements, some not)</h2>
+<p>The <strong>challenge</strong> is to <strong>integrate</strong> the new system while maintaining <strong>stability</strong>. We need to <strong>allocate</strong> resources <strong>appropriate</strong>ly. The <strong>council</strong> will <strong>evaluate</strong> the proposal next week. A <strong>tremendous</strong> amount of effort went into this <strong>initiative</strong>.</p>
+<p>Words like <strong>pizza</strong>, <strong>banana</strong>, and <strong>rainbow</strong> should remain unchanged alongside <strong>significant</strong>, <strong>potential</strong>, and <strong>relevant</strong> vocabulary words.</p>
+
+<h2>9. Punctuation and boundaries</h2>
+<p>Look! Look? Look. "Look," he said. Look's effect (with apostrophe). (Look) — look; look: look. It's a "significant" achievement. The "challenge" continues.</p>
+
+<h2>10. Dense paragraph for performance testing</h2>
+<p>The government must <strong>establish</strong> a <strong>comprehensive</strong> <strong>strategy</strong> to <strong>address</strong> the <strong>significant</strong> <strong>challenge</strong> of climate <strong>change</strong>. Scientists <strong>emphasize</strong> that we need to <strong>adapt</strong> our <strong>approach</strong> and <strong>implement</strong> <strong>effective</strong> solutions. The <strong>consequence</strong> of inaction would be <strong>severe</strong>. Every <strong>individual</strong> and <strong>institution</strong> must <strong>participate</strong> in this <strong>effort</strong>. The <strong>evidence</strong> is <strong>clear</strong>: we need <strong>immediate</strong> action. Researchers continue to <strong>investigate</strong> new <strong>technologies</strong> that could <strong>transform</strong> our energy systems. The <strong>transition</strong> to a <strong>sustainable</strong> future <strong>requires</strong> <strong>collaboration</strong> across <strong>boundaries</strong> and <strong>disciplines</strong>.</p>
+<p style="margin-top:16px">Despite the <strong>obstacles</strong>, there is reason for <strong>optimistic</strong> thinking about our <strong>collective</strong> future. The <strong>pace</strong> of <strong>innovation</strong> continues to <strong>accelerate</strong>, and public <strong>awareness</strong> has <strong>increased</strong> <strong>dramatic</strong>ally. Many <strong>communities</strong> have already <strong>demonstrated</strong> that <strong>positive</strong> <strong>outcome</strong>s are <strong>feasible</strong> when people <strong>cooperate</strong> and <strong>contribute</strong> their <strong>unique</strong> talents and <strong>resources</strong>.</p>
+
+<hr />
+
+<h2>Verification checklist</h2>
+<ul>
+  <li><input type="checkbox" /> Words from the sample vocab are replaced with `word(释义)` format</li>
+  <li><input type="checkbox" /> look/looks/looked/looking are all replaced (from "look")</li>
+  <li><input type="checkbox" /> study/studies/studied/studying are all replaced</li>
+  <li><input type="checkbox" /> Substrings like "apple" in "pineapple" are <strong>not</strong> replaced</li>
+  <li><input type="checkbox" /> Textarea, input, script content are <strong>not</strong> replaced</li>
+  <li><input type="checkbox" /> Words not in vocab (pizza, banana, elephant) are <strong>not</strong> replaced</li>
+  <li><input type="checkbox" /> Punctuation boundaries work correctly (Look! Look? "Look,")</li>
+  <li><input type="checkbox" /> Toggle off → all marks removed, original text restored</li>
+  <li><input type="checkbox" /> Toggle on → marks reappear</li>
+</ul>
+
+<script src="content/index.js"></script>
+</body>
+</html>
