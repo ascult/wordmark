@@ -1,0 +1,22 @@
+{
+  "name": "wordmark",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Replace marked words on web pages with inline Chinese translations",
+  "type": "module",
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.310",
+    "esbuild": "^0.25.0",
+    "jsdom": "^29.1.1",
+    "puppeteer-core": "^25.3.0",
+    "typescript": "^5.8.0",
+    "vitest": "^4.1.10"
+  }
+}
