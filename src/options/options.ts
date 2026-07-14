@@ -1,5 +1,5 @@
 import {
-  getVocabList, removeWord, updateWord, exportJSON,
+  getVocabList, removeWord, updateWord, exportJSON, importJSON, importCSV,
   getSettings, updateSettings,
 } from "../background/storage.js";
 
@@ -203,7 +203,6 @@ function init(): void {
       if (!file) return;
       const text = await file.text();
       try {
-        const { importJSON, importCSV } = await import("../background/storage.js");
         await (file.name.endsWith(".csv") ? importCSV(text) : importJSON(text));
         renderList();
       } catch (err) {

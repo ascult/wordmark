@@ -38,6 +38,16 @@ export function walkTextNodes(root: Node): TextNodeInfo[] {
   return result;
 }
 
-export function isDomainAllowed(_settings: Settings): boolean {
+export function isDomainAllowed(settings: Settings): boolean {
+  const hostname = window.location.hostname;
+
+  if (settings.whitelist.length > 0) {
+    return settings.whitelist.some((d) => hostname === d || hostname.endsWith("." + d));
+  }
+
+  if (settings.blacklist.length > 0) {
+    return !settings.blacklist.some((d) => hostname === d || hostname.endsWith("." + d));
+  }
+
   return true;
 }

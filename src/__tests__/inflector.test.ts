@@ -81,8 +81,17 @@ describe("generateInflections", () => {
     expect(result).toEqual(
       expect.arrayContaining(["apple", "apples"])
     );
-    // Words ending in 'e' get +d and +ing on base form
     expect(result).toContain("appled");
     expect(result).toContain("appleing");
+  });
+
+  it("generates -ly adverb form", () => {
+    const result = generateInflections("independent");
+    expect(result).toContain("independently");
+  });
+
+  it("generates -ly by dropping final e", () => {
+    const result = generateInflections("simple");
+    expect(result).toContain("simply");
   });
 });

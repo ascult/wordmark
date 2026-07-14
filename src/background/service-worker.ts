@@ -49,9 +49,10 @@ chrome.runtime.onMessage.addListener(
       message.type === "batch-translate" &&
       message.words &&
       message.words.length > 0 &&
-      message.pageText
+      message.segments &&
+      message.segments.length > 0
     ) {
-      batchTranslate(message.words, message.pageText)
+      batchTranslate(message.words, message.segments)
         .then((definitions) => sendResponse({ definitions }))
         .catch(() => sendResponse({ definitions: {} }));
       return true;

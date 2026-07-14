@@ -39,6 +39,18 @@ async function init(): Promise<void> {
 
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
+  async function updateMatchCount(): Promise<void> {
+    if (tabs[0]?.id && matchCount) {
+      try {
+        const response = await chrome.tabs.sendMessage(tabs[0].id, { type: "get-match-count" });
+        matchCount.textContent = String(response?.count ?? 0);
+      } catch {
+        matchCount.textContent = "—";
+      }
+    }
+  }
+  updateMatchCount();
+
   async function notifyContent(): Promise<void> {
     if (tabs[0]?.id) {
       chrome.tabs.sendMessage(tabs[0].id, { type: "vocab-updated" }).catch(() => {});
