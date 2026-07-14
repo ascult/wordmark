@@ -1,5 +1,5 @@
 const STORAGE_KEY = "_wm_segment_cache";
-const MAX_ENTRIES = 500;
+const MAX_ENTRIES = 5000;
 
 interface CacheEntry {
   zhText: string;
