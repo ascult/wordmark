@@ -9,7 +9,7 @@
 - **页面替换引擎**：全词匹配 + 屈折形态支持，自动将已标记单词在网页中替换为 `原词(释义)` 并添加浅黄色高亮
 - **替换控制**：全局开关、键盘快捷键（`Alt+W`）
 - **内置测试页**：通过 Popup "打开测试页" 按钮，在 `chrome-extension://` 页面中验证替换效果
-- **示例词库**：200 词 CEFR B1-B2 级别内置示例
+- **示例词库**：5644 词 CET4+CET6 考试大纲内置示例
 
 ## 快速开始
 
@@ -76,7 +76,7 @@ wordmark/
 │   │   ├── types.ts
 │   │   ├── constants.ts
 │   │   ├── utils.ts
-│   │   └── sample-vocab.ts # 200 词 CEFR B1-B2 示例
+│   │   └── sample-vocab.ts # 5644 词 CET4+CET6 示例
 │   ├── icons/
 │   │   └── icon.svg
 │   ├── test-page.html      # 内置测试页
