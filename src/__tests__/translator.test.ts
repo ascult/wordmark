@@ -25,9 +25,9 @@ beforeEach(() => {
 
 describe("translate (individual word lookup)", () => {
   it("returns definition from bundled dict", async () => {
-    mockLookup.mockReturnValueOnce({ def: "n. 需要；必需；必要之物", cn: ["需要", "必需"] });
-    const result = await translate("need");
-    expect(result).toBe("n. 需要；必需；必要之物");
+    mockLookup.mockReturnValueOnce({ def: "v. 安装；设置", cn: ["安装", "设置"] });
+    const result = await translate("install");
+    expect(result).toBe("v. 安装；设置");
   });
 
   it("returns empty string for unknown word", async () => {
@@ -40,124 +40,122 @@ describe("translate (individual word lookup)", () => {
 describe("batchTranslate (per-segment Bing requests)", () => {
   it("matches words against single segment Chinese translation", async () => {
     mockBingTranslate.mockResolvedValueOnce(
-      "这是测试页面。学生需要适应新环境。成绩很重要。"
+      "这是安装指南。运行构建命令来编译项目。配置需要遵循规范。"
     );
 
     mockLookup.mockImplementation((word: string) => {
       const dict: Record<string, { def: string; cn: string[] }> = {
-        test: { def: "n. 测验；测试；考验", cn: ["测验", "考试", "测试", "考验"] },
-        student: { def: "n. 学生；学者", cn: ["学生", "学者"] },
-        adapt: { def: "v. 适应；改编", cn: ["适应", "改编"] },
-        result: { def: "n. 结果；成绩；成果", cn: ["结果", "成绩", "成果"] },
+        install: { def: "v. 安装；设置", cn: ["安装", "设置"] },
+        build: { def: "v. 构建；建造", cn: ["构建", "建造", "编译"] },
+        config: { def: "n. 配置；设置", cn: ["配置", "设置"] },
       };
       return dict[word.toLowerCase()] ?? undefined;
     });
 
     const result = await batchTranslate(
-      ["test", "student", "adapt", "result"],
-      ["This is a test page. Students need to adapt to the new environment. Results are important."]
+      ["install", "build", "config"],
+      ["Run the install command to build the project. Config follows the standard."]
     );
 
     expect(mockBingTranslate).toHaveBeenCalledTimes(1);
-    expect(result["test"]).toBe("测试");
-    expect(result["student"]).toBe("学生");
-    expect(result["adapt"]).toBe("适应");
-    expect(result["result"]).toBe("成绩");
+    expect(result["install"]).toBe("安装");
+    expect(result["build"]).toBe("构建");
+    expect(result["config"]).toBe("配置");
   });
 
   it("exact match beats char fallback", async () => {
-    mockBingTranslate.mockResolvedValue("这是一种新的方法。");
+    mockBingTranslate.mockResolvedValue("这是一个新的库。");
     mockLookup.mockImplementation((word: string) => {
-      if (word === "new") return { def: "adj. 新出现的；崭新的；新的", cn: ["新出现的", "崭新的", "新的"] };
+      if (word === "library") return { def: "n. 图书馆；库；丛书", cn: ["图书馆", "库", "丛书"] };
       return undefined;
     });
 
     const result = await batchTranslate(
-      ["new"],
-      ["This is a new approach."]
+      ["library"],
+      ["This is a new library."]
     );
 
-    expect(result["new"]).toBe("新的");
+    expect(result["library"]).toBe("库");
   });
 
   it("returns cn[0] fallback when Bing fails", async () => {
     mockBingTranslate.mockRejectedValueOnce(new Error("Bing error"));
     mockLookup.mockImplementation((word: string) => {
-      if (word === "need") return { def: "v. 需要；必需 n. 需要；必要之物", cn: ["需要", "必需"] };
+      if (word === "install") return { def: "v. 安装；设置 n. 安装程序", cn: ["安装", "设置"] };
       return undefined;
     });
 
     const result = await batchTranslate(
-      ["need"],
-      ["I need to go to the store"]
+      ["install"],
+      ["npm install --save react"]
     );
 
-    expect(result["need"]).toBe("需要");
+    expect(result["install"]).toBe("安装");
   });
 
   it("handles empty words list", async () => {
-    const result = await batchTranslate([], ["some text"]);
+    const result = await batchTranslate([], ["npm install"]);
     expect(result).toEqual({});
   });
 
   it("handles empty segments list", async () => {
-    const result = await batchTranslate(["test"], []);
+    const result = await batchTranslate(["install"], []);
     expect(result).toEqual({});
   });
 
   it("processes multiple segments with one Bing call each", async () => {
     mockBingTranslate
-      .mockResolvedValueOnce("这是第一段。")
-      .mockResolvedValueOnce("这是第二段。");
+      .mockResolvedValueOnce("安装依赖项。")
+      .mockResolvedValueOnce("构建并运行。");
 
     mockLookup.mockImplementation((word: string) => {
-      if (word === "first") return { def: "det. 第一", cn: ["第一"] };
-      if (word === "second") return { def: "det. 第二", cn: ["第二"] };
+      if (word === "install") return { def: "v. 安装", cn: ["安装"] };
+      if (word === "build") return { def: "v. 构建", cn: ["构建"] };
       return undefined;
     });
 
     const result = await batchTranslate(
-      ["first", "second"],
-      ["This is the first segment.", "This is the second segment."]
+      ["install", "build"],
+      ["Install dependencies.", "Build and run."]
     );
 
     expect(mockBingTranslate).toHaveBeenCalledTimes(2);
-    expect(result["first"]).toBe("第一");
-    expect(result["second"]).toBe("第二");
+    expect(result["install"]).toBe("安装");
+    expect(result["build"]).toBe("构建");
   });
 
   it("skips segments that don't contain relevant words", async () => {
-    mockBingTranslate.mockResolvedValue("重要信息。");
+    mockBingTranslate.mockResolvedValue("项目配置说明。");
 
     mockLookup.mockImplementation((word: string) => {
-      if (word === "important") return { def: "adj. 重要的", cn: ["重要的"] };
+      if (word === "config") return { def: "n. 配置", cn: ["配置"] };
       return undefined;
     });
 
     const result = await batchTranslate(
-      ["important"],
-      ["irrelevant text without keywords", "this is important"]
+      ["config"],
+      ["This segment has no CET words", "Project configuration guide"]
     );
 
     expect(mockBingTranslate).toHaveBeenCalledTimes(1);
-    expect(result["important"]).toBe("重要的");
+    expect(result["config"]).toBe("配置");
   });
 
   it("falls back to dict cn[0] for words not found in any segment", async () => {
-    mockBingTranslate.mockResolvedValue("其他文本。");
+    mockBingTranslate.mockResolvedValue("已安装依赖项。");
 
     mockLookup.mockImplementation((word: string) => {
-      if (word === "present") return { def: "adj. 在场的；现在的", cn: ["在场的", "现在的"] };
-      if (word === "absent") return { def: "adj. 缺席的", cn: ["缺席的"] };
+      if (word === "install") return { def: "v. 安装", cn: ["安装"] };
+      if (word === "deploy") return { def: "v. 部署；配置", cn: ["部署", "配置"] };
       return undefined;
     });
 
     const result = await batchTranslate(
-      ["present", "absent"],
-      ["The absent student missed class."]
+      ["install", "deploy"],
+      ["Dependencies installed."]
     );
 
-    expect(result["absent"]).toBe("缺席的");
-    expect(result["present"]).toBe("在场的");
+    expect(result["install"]).toBe("安装");
+    expect(result["deploy"]).toBe("部署");
   });
 });
