@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "extension-perf-forensics": {
+      "source": "mengxi-ream/read-frog",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/extension-perf-forensics/SKILL.md",
+      "computedHash": "3a0ec054f022803cb59a17ae5643ae970972844356b05461a9665faa4e89adbd"
+    },
+    "extension-real-browser-testing": {
+      "source": "mengxi-ream/read-frog",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/extension-real-browser-testing/SKILL.md",
+      "computedHash": "afce51bbb871dc8d01d5a0ed28396f0a5e269a9fcadb8e1db07d438cfa647398"
+    }
+  }
+}
