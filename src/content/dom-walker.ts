@@ -1,4 +1,5 @@
 import type { Settings } from "../common/types.js";
+import { ANNOTATION_CLASS } from "../common/constants.js";
 
 const SKIP_TAGS = new Set([
   "SCRIPT", "STYLE", "TEXTAREA", "INPUT", "SELECT",
@@ -17,6 +18,7 @@ export function walkTextNodes(root: Node): TextNodeInfo[] {
       const parent = node.parentElement;
       if (!parent) return NodeFilter.FILTER_REJECT;
       if (SKIP_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
+      if (parent.closest(`.${ANNOTATION_CLASS}`)) return NodeFilter.FILTER_REJECT;
       if (getComputedStyle(parent).visibility === "hidden")
         return NodeFilter.FILTER_REJECT;
       if (getComputedStyle(parent).display === "none")

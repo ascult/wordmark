@@ -1,5 +1,6 @@
 import { createContextMenu, handleContextMenuClick } from "./context-menu.js";
 import { getSettings, updateSettings } from "./storage.js";
+import { translate, batchTranslate } from "./translator.js";
 
 chrome.runtime.onInstalled.addListener(() => {
   try {
@@ -30,5 +31,32 @@ chrome.commands.onCommand.addListener(async (command) => {
     console.error("Command handler failed:", err);
   }
 });
+
+chrome.runtime.onMessage.addListener(
+  (
+    message: { type: string; word?: string; words?: string[]; pageText?: string },
+    _sender,
+    sendResponse
+  ) => {
+    if (message.type === "fetch-translation" && message.word) {
+      translate(message.word)
+        .then((definition) => sendResponse({ definition }))
+        .catch(() => sendResponse({ definition: undefined }));
+      return true;
+    }
+
+    if (
+      message.type === "batch-translate" &&
+      message.words &&
+      message.words.length > 0 &&
+      message.pageText
+    ) {
+      batchTranslate(message.words, message.pageText)
+        .then((definitions) => sendResponse({ definitions }))
+        .catch(() => sendResponse({ definitions: {} }));
+      return true;
+    }
+  }
+);
 
 console.log("wordmark service worker loaded");

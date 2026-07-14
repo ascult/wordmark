@@ -16,15 +16,24 @@
       <div class="stats">
         本页命中：<span id="match-count">0</span> 词
       </div>
+
       <label class="toggle">
         <input type="checkbox" id="global-toggle" />
         <span class="slider"></span>
         <span class="label-text">全局替换</span>
       </label>
 
-      <div id="empty-state" class="empty-state hidden">
-        <p>单词本为空</p>
-        <button id="import-sample-btn">导入示例词库</button>
+      <div class="cet-toggles">
+        <label class="toggle cet-toggle">
+          <input type="checkbox" id="cet4-toggle" />
+          <span class="slider"></span>
+          <span class="label-text">CET-4 <span id="cet4-count" class="cet-count"></span></span>
+        </label>
+        <label class="toggle cet-toggle">
+          <input type="checkbox" id="cet6-toggle" />
+          <span class="slider"></span>
+          <span class="label-text">CET-6 <span id="cet6-count" class="cet-count"></span></span>
+        </label>
       </div>
 
       <div class="actions">

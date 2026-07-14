@@ -6,8 +6,9 @@ import {
   exportCSV,
   importJSON,
   importCSV,
-  importSampleVocab,
 } from "../background/storage.js";
+import { WORDS as CET4 } from "../common/cet4.js";
+import { WORDS as CET6 } from "../common/cet6.js";
 
 async function init(): Promise<void> {
   const settings = await getSettings();
@@ -19,27 +20,38 @@ async function init(): Promise<void> {
   const importBtn = document.getElementById("import-btn");
   const exportBtn = document.getElementById("export-btn");
   const fileInput = document.getElementById("file-input") as HTMLInputElement;
-  const emptyState = document.getElementById("empty-state");
-  const importSampleBtn = document.getElementById("import-sample-btn");
+  const cet4Toggle = document.getElementById("cet4-toggle") as HTMLInputElement;
+  const cet6Toggle = document.getElementById("cet6-toggle") as HTMLInputElement;
+  const cet4Count = document.getElementById("cet4-count");
+  const cet6Count = document.getElementById("cet6-count");
 
   toggle.checked = settings.enabled;
+  cet4Toggle.checked = settings.cet4Enabled;
+  cet6Toggle.checked = settings.cet6Enabled;
 
-  if (wordCount) wordCount.textContent = String(vocab.length);
+  const totalWords = vocab.length +
+    (settings.cet4Enabled ? CET4.length : 0) +
+    (settings.cet6Enabled ? CET6.length : 0);
+  if (wordCount) wordCount.textContent = String(totalWords);
 
-  if (vocab.length === 0 && emptyState) {
-    emptyState.classList.remove("hidden");
-  }
+  if (cet4Count) cet4Count.textContent = `(${CET4.length}词)`;
+  if (cet6Count) cet6Count.textContent = `(${CET6.length}词)`;
 
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (tabs[0]?.id) {
-    try {
-      const response = await chrome.tabs.sendMessage(tabs[0].id, {
-        type: "get-match-count",
-      });
-      if (matchCount) matchCount.textContent = String(response.count);
-    } catch {
-      // content script not loaded on this page
+
+  async function notifyContent(): Promise<void> {
+    if (tabs[0]?.id) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: "vocab-updated" }).catch(() => {});
     }
+  }
+
+  async function updateWordCount(): Promise<void> {
+    const s = await getSettings();
+    const v = await getVocabList();
+    const total = v.length +
+      (s.cet4Enabled ? CET4.length : 0) +
+      (s.cet6Enabled ? CET6.length : 0);
+    if (wordCount) wordCount.textContent = String(total);
   }
 
   toggle.addEventListener("change", async () => {
@@ -53,18 +65,20 @@ async function init(): Promise<void> {
     }
   });
 
-  manageBtn?.addEventListener("click", () => {
-    chrome.runtime.openOptionsPage();
+  cet4Toggle.addEventListener("change", async () => {
+    await updateSettings({ cet4Enabled: cet4Toggle.checked });
+    await updateWordCount();
+    await notifyContent();
   });
 
-  importSampleBtn?.addEventListener("click", async () => {
-    await importSampleVocab();
-    await updateSettings({ importSampleDone: true });
-    if (wordCount) wordCount.textContent = String((await getVocabList()).length);
-    if (emptyState) emptyState.classList.add("hidden");
-    if (tabs[0]?.id) {
-      chrome.tabs.sendMessage(tabs[0].id, { type: "vocab-updated" }).catch(() => {});
-    }
+  cet6Toggle.addEventListener("change", async () => {
+    await updateSettings({ cet6Enabled: cet6Toggle.checked });
+    await updateWordCount();
+    await notifyContent();
+  });
+
+  manageBtn?.addEventListener("click", () => {
+    chrome.runtime.openOptionsPage();
   });
 
   importBtn?.addEventListener("click", () => {
@@ -78,11 +92,8 @@ async function init(): Promise<void> {
     const isCSV = file.name.endsWith(".csv");
     try {
       const count = isCSV ? await importCSV(text) : await importJSON(text);
-      if (wordCount) wordCount.textContent = String((await getVocabList()).length);
-      if (emptyState) emptyState.classList.add("hidden");
-      if (tabs[0]?.id) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: "vocab-updated" }).catch(() => {});
-      }
+      await updateWordCount();
+      await notifyContent();
     } catch (err) {
       alert(`导入失败: ${err}`);
     }
@@ -106,7 +117,6 @@ async function init(): Promise<void> {
     const url = chrome.runtime.getURL("test-page.html");
     await updateSettings({ enabled: true });
     const tab = await chrome.tabs.create({ url });
-    // Wait for the page to finish loading
     await new Promise<void>((resolve) => {
       const listener = (tabId: number, info: chrome.tabs.TabChangeInfo) => {
         if (tabId === tab.id && info.status === "complete") {
@@ -115,7 +125,6 @@ async function init(): Promise<void> {
         }
       };
       chrome.tabs.onUpdated.addListener(listener);
-      // If we missed the event, the page may already be loaded
       if (tab.status === "complete") {
         chrome.tabs.onUpdated.removeListener(listener);
         resolve();

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { AhoCorasick } from "../content/matcher.js";
+import type { WordBound } from "../content/tokenizer.js";
 
 describe("AhoCorasick", () => {
   it("finds a single word in text", () => {
@@ -125,5 +126,56 @@ describe("AhoCorasick", () => {
     expect(results.map((r) => r.word)).toEqual(
       expect.arrayContaining(["word50", "word99"])
     );
+  });
+
+  it("filters out matches that don't start at word boundaries", () => {
+    const patterns = new Map([["apple", ["apple"]]]);
+    const ac = new AhoCorasick(patterns);
+    const wordBounds: WordBound[] = [{ start: 0, end: 9 }];
+    const results = ac.search("pineapple", wordBounds);
+    expect(results).toHaveLength(0);
+  });
+
+  it("keeps matches that align with word boundaries", () => {
+    const patterns = new Map([["apple", ["apple"]]]);
+    const ac = new AhoCorasick(patterns);
+    const wordBounds: WordBound[] = [
+      { start: 0, end: 3 },
+      { start: 4, end: 9 },
+    ];
+    const results = ac.search("eat apple", wordBounds);
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({ word: "apple", index: 4, endIndex: 9 });
+  });
+
+  it("returns all matches when no wordBounds provided", () => {
+    const patterns = new Map([["apple", ["apple"]]]);
+    const ac = new AhoCorasick(patterns);
+    const results = ac.search("pineapple");
+    expect(results).toHaveLength(1);
+    expect(results[0].word).toBe("apple");
+  });
+
+  it("filters substring matches correctly for single-letter patterns", () => {
+    const patterns = new Map([["i", ["i"]]]);
+    const ac = new AhoCorasick(patterns);
+    const wordBounds: WordBound[] = [
+      { start: 0, end: 6 },
+    ];
+    // "unique" contains "i" at position 4 but "i" is not a whole word
+    const results = ac.search("unique", wordBounds);
+    expect(results).toHaveLength(0);
+  });
+
+  it("uses variant length for correct index calculation on inflected forms", () => {
+    const patterns = new Map([["look", ["look", "looks", "looked", "looking"]]]);
+    const ac = new AhoCorasick(patterns);
+    const wordBounds: WordBound[] = [{ start: 0, end: 7 }];
+    const results = ac.search("looking", wordBounds);
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    // The match for "looking" variant should start at index 0, not index 3
+    const match = results.find((r) => r.endIndex === 7);
+    expect(match).toBeDefined();
+    expect(match!.index).toBe(0);
   });
 });

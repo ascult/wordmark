@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { replaceMatches } from "../content/replacer.js";
 import { AhoCorasick } from "../content/matcher.js";
-import type { VocabularyEntry } from "../common/types.js";
+import type { VocabInfo } from "../common/types.js";
 import { ANNOTATION_CLASS } from "../common/constants.js";
 
-const mockVocabMap = new Map<string, VocabularyEntry>([
-  ["hello", { id: "1", word: "hello", definition: "你好", createdAt: 100 }],
-  ["world", { id: "2", word: "world", definition: "世界", createdAt: 100 }],
+const mockVocabMap = new Map<string, VocabInfo>([
+  ["hello", { definition: "你好", source: "custom" }],
+  ["world", { definition: "世界", source: "custom" }],
 ]);
 
 function createMatcher(patterns: Map<string, string[]>): AhoCorasick {
@@ -96,8 +96,8 @@ describe("replaceMatches", () => {
   it("replaces matching word variants (inflections)", () => {
     document.body.innerHTML = "<div>look forward</div>";
     const matcher = createMatcher(new Map([["look", ["look", "looks", "looked", "looking"]]]));
-    const vocabMap = new Map<string, VocabularyEntry>([
-      ["look", { id: "1", word: "look", definition: "看", createdAt: 100 }],
+    const vocabMap = new Map<string, VocabInfo>([
+      ["look", { definition: "看", source: "custom" }],
     ]);
     replaceMatches(document.body, matcher, vocabMap);
 
@@ -131,14 +131,51 @@ describe("replaceMatches", () => {
       ["hello", ["hello"]],
       ["world", ["world"]],
     ]));
-    const vocabMap = new Map<string, VocabularyEntry>([
-      ["hello", { id: "1", word: "hello", definition: "你好", createdAt: 100 }],
-      ["world", { id: "2", word: "world", definition: "世界", createdAt: 100 }],
+    const vocabMap = new Map<string, VocabInfo>([
+      ["hello", { definition: "你好", source: "custom" }],
+      ["world", { definition: "世界", source: "custom" }],
     ]);
     replaceMatches(document.body, matcher, vocabMap);
 
     const marks = document.querySelectorAll(`.${ANNOTATION_CLASS}`);
     expect(marks[0].getAttribute("data-original")).toBe("hello");
     expect(marks[1].getAttribute("data-original")).toBe("world");
+  });
+
+  it("does not match substrings inside words", () => {
+    document.body.innerHTML = "<div>pineapple</div>";
+    const matcher = createMatcher(new Map([["apple", ["apple"]]]));
+    replaceMatches(document.body, matcher, mockVocabMap);
+    expect(document.querySelectorAll(`.${ANNOTATION_CLASS}`)).toHaveLength(0);
+    expect(document.body.innerHTML).toContain("pineapple");
+  });
+
+  it("does not annotate common stop words", () => {
+    document.body.innerHTML = "<div>the apple is red</div>";
+    const matcher = createMatcher(new Map([
+      ["the", ["the"]],
+      ["apple", ["apple"]],
+      ["is", ["is"]],
+      ["red", ["red"]],
+    ]));
+    const vocabMap = new Map<string, VocabInfo>([
+      ["the", { definition: "定冠词", source: "custom" }],
+      ["apple", { definition: "苹果", source: "custom" }],
+      ["is", { definition: "是", source: "custom" }],
+      ["red", { definition: "红色的", source: "custom" }],
+    ]);
+    replaceMatches(document.body, matcher, vocabMap);
+
+    const marks = document.querySelectorAll(`.${ANNOTATION_CLASS}`);
+    expect(marks).toHaveLength(2);
+    expect(marks[0].textContent).toBe("apple(苹果)");
+    expect(marks[1].textContent).toBe("red(红色的)");
+  });
+
+  it("handles text with no word-like segments gracefully", () => {
+    document.body.innerHTML = "<div>!!!</div>";
+    const matcher = createMatcher(new Map([["hello", ["hello"]]]));
+    replaceMatches(document.body, matcher, mockVocabMap);
+    expect(document.body.innerHTML).toContain("!!!");
   });
 });

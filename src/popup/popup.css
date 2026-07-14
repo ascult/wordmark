@@ -158,3 +158,24 @@ header h1 {
 .actions button.secondary:hover {
   background: #e3f2fd;
 }
+
+.cet-toggles {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.cet-toggle {
+  margin-bottom: 6px;
+}
+
+.cet-toggle:last-child {
+  margin-bottom: 0;
+}
+
+.cet-count {
+  font-size: 11px;
+  color: #999;
+  font-weight: normal;
+}

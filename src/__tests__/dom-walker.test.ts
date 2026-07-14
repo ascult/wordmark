@@ -8,6 +8,8 @@ describe("isDomainAllowed", () => {
     whitelist: [],
     blacklist: [],
     importSampleDone: true,
+    cet4Enabled: false,
+    cet6Enabled: false,
   };
 
   beforeEach(() => {

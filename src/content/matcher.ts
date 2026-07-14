@@ -1,10 +1,16 @@
 import type { VocabularyEntry } from "../common/types.js";
 import { generateInflections } from "./inflector.js";
+import type { WordBound } from "./tokenizer.js";
+
+interface ACOutput {
+  word: string;
+  variantLen: number;
+}
 
 interface ACNode {
   children: Map<string, ACNode>;
   fail: ACNode | null;
-  output: string[];
+  output: ACOutput[];
 }
 
 export interface MatchResult {
@@ -36,7 +42,7 @@ export class AhoCorasick {
           }
           node = node.children.get(ch)!;
         }
-        node.output.push(baseWord);
+        node.output.push({ word: baseWord, variantLen: variant.length });
       }
     }
   }
@@ -61,7 +67,7 @@ export class AhoCorasick {
     }
   }
 
-  search(text: string): MatchResult[] {
+  search(text: string, wordBounds?: WordBound[]): MatchResult[] {
     const results: MatchResult[] = [];
     let node = this.root;
 
@@ -73,14 +79,22 @@ export class AhoCorasick {
       node = node.children.get(ch) || this.root;
 
       if (node.output.length > 0) {
-        for (const word of node.output) {
+        for (const { word, variantLen } of node.output) {
           results.push({
             word,
-            index: i - word.length + 1,
+            index: i - variantLen + 1,
             endIndex: i + 1,
           });
         }
       }
+    }
+
+    if (wordBounds) {
+      return results.filter((match) =>
+        wordBounds.some(
+          (bound) => match.index === bound.start && match.endIndex === bound.end
+        )
+      );
     }
 
     return results;

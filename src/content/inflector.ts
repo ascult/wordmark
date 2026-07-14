@@ -36,8 +36,8 @@ export function generateInflections(word: string): string[] {
   // Present participle: -ing
   inflections.add(word + "ing");
 
-  // Double final consonant + -ing/-ed for short words
-  if (word.length <= 3 && /[^aeiou]$/.test(word)) {
+  // Double final consonant + -ing/-ed for short words (at least 2 letters)
+  if (word.length >= 2 && word.length <= 3 && /[^aeiou]$/.test(word)) {
     inflections.add(word + word[word.length - 1] + "ing");
     inflections.add(word + word[word.length - 1] + "ed");
   }

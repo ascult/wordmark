@@ -1,14 +1,18 @@
-import type { VocabularyEntry } from "../common/types.js";
+import type { VocabInfo } from "../common/types.js";
 import { ANNOTATION_CLASS, ANNOTATION_STYLE } from "../common/constants.js";
 import { walkTextNodes, TextNodeInfo } from "./dom-walker.js";
 import { AhoCorasick, MatchResult } from "./matcher.js";
+import { getWordBounds } from "./tokenizer.js";
+import { STOP_WORDS } from "../common/stop-words.js";
 
 const CHUNK_SIZE = 10;
+
+export { ANNOTATION_CLASS };
 
 export function replaceMatches(
   root: Node,
   matcher: AhoCorasick,
-  vocabMap: Map<string, VocabularyEntry>
+  vocabInfoMap: Map<string, VocabInfo>
 ): void {
   const textNodes = walkTextNodes(root);
 
@@ -20,9 +24,12 @@ export function replaceMatches(
     const end = Math.min(index + CHUNK_SIZE, textNodes.length);
     for (let i = index; i < end; i++) {
       const { node, text } = textNodes[i];
-      const matches = matcher.search(text.toLowerCase());
+      const bounds = getWordBounds(text);
+      const matches = matcher
+        .search(text.toLowerCase(), bounds)
+        .filter((m) => !STOP_WORDS.has(m.word));
       if (matches.length === 0) continue;
-      applyMatchToNode(node, text, matches, vocabMap);
+      applyMatchToNode(node, text, matches, vocabInfoMap);
     }
     index = end;
 
@@ -42,7 +49,7 @@ function applyMatchToNode(
   node: Text,
   text: string,
   matches: MatchResult[],
-  vocabMap: Map<string, VocabularyEntry>
+  vocabInfoMap: Map<string, VocabInfo>
 ): void {
   const parts: (string | HTMLElement)[] = [];
   let lastIndex = 0;
@@ -54,10 +61,10 @@ function applyMatchToNode(
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
     }
-    const entry = vocabMap.get(match.word);
-    if (entry) {
+    const info = vocabInfoMap.get(match.word);
+    if (info) {
       const originalText = text.slice(match.index, match.endIndex);
-      const mark = createAnnotatedElement(originalText, entry.definition);
+      const mark = createAnnotatedElement(originalText, info.definition);
       parts.push(mark);
     }
     lastIndex = match.endIndex;
@@ -92,12 +99,12 @@ function mergeOverlapping(matches: MatchResult[]): MatchResult[] {
 
 function createAnnotatedElement(
   original: string,
-  definition: string
+  definition?: string
 ): HTMLElement {
   const el = document.createElement("mark");
   el.className = ANNOTATION_CLASS;
   el.setAttribute("data-original", original);
   el.style.cssText = ANNOTATION_STYLE;
-  el.textContent = `${original}(${definition})`;
+  el.textContent = definition ? `${original}(${definition})` : original;
   return el;
 }

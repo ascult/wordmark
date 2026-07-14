@@ -8,6 +8,8 @@ export const DEFAULT_SETTINGS = {
   whitelist: [],
   blacklist: [],
   importSampleDone: false,
+  cet4Enabled: false,
+  cet6Enabled: false,
 } as const;
 
 export const TRANSLATION_TIMEOUT = 5000;

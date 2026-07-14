@@ -24,7 +24,7 @@ describe("getStorageData", () => {
     const data = await getStorageData();
     expect(data).toEqual({
       vocabList: [],
-      settings: { enabled: false, whitelist: [], blacklist: [], importSampleDone: false },
+      settings: { enabled: false, whitelist: [], blacklist: [], importSampleDone: false, cet4Enabled: false, cet6Enabled: false },
     });
   });
 
