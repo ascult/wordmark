@@ -174,7 +174,9 @@ export function isLocalEndpointHost(hostname: string): boolean {
     if (a === 169 && b === 254) return true; // link-local
     return false;
   }
-  // IPv6 ULA fc00::/7
+  // IPv6 ULA fc00::/7。必须先确认它真是 IPv6 字面量：单标签主机名 `fc00` / `fcc0` 之类
+  // 会落进同一个十六进制区间，但那是可被 DNS 解析的名字，不在白名单语义内。
+  if (!host.includes(':')) return false;
   const firstHextet = host.split(':')[0] ?? '';
   if (/^[0-9a-f]{1,4}$/.test(firstHextet)) {
     return (Number.parseInt(firstHextet, 16) & 0xfe00) === 0xfc00;

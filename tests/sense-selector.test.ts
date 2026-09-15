@@ -263,7 +263,20 @@ describe('语境义设置校验', () => {
     ]) {
       expect(isLocalEndpointHost(host)).toBe(true);
     }
-    for (const host of ['', 'example.com', '8.8.8.8', '11.0.0.1', '172.32.0.1', 'fe80::1', 'notlocal']) {
+    for (const host of [
+      '',
+      'example.com',
+      '8.8.8.8',
+      '11.0.0.1',
+      '172.32.0.1',
+      'fe80::1',
+      'notlocal',
+      // 单标签主机名会落进 fc00::/7 的十六进制区间，但不是 IPv6 字面量
+      'fc00',
+      'fcc0',
+      'fd0a',
+      'fdfd',
+    ]) {
       expect(isLocalEndpointHost(host)).toBe(false);
     }
   });

@@ -216,7 +216,13 @@ function timeoutSignal(ms: number): AbortSignal | undefined {
   return typeof factory === 'function' ? factory(ms) : undefined;
 }
 
-/** 校验一条服务端结果；`index < 0`（无可用义项）也返回 null，与请求失败同样处理。 */
+/**
+ * 校验一条服务端结果。
+ *
+ * 只负责「服务端给了一个有效下标」这一种情形：`index < 0`（没得选）由 `#fetchPicks`
+ * 单独识别并落否定缓存，形状不对则整条丢弃、不缓存——两者在缓存语义上已经分开，
+ * 这里保留 `< 0` 的判断是为了防止漏网的负下标被当成一次「选中」。
+ */
 function parsePick(raw: SelectResponseItem | undefined): SensePick | null {
   if (typeof raw !== 'object' || raw === null) return null;
   const index = raw.index;
