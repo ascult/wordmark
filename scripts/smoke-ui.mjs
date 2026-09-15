@@ -155,7 +155,7 @@ function createChromeMock(options) {  const state = {
           // host 由内容脚本提供——弹窗不再依赖 tab.url（那需要额外权限）
           return {
             ok: true,
-            data: { host: 'example.com', glossed: 12, unique: 7, unresolved: 3, active: true },
+            data: { host: 'example.com', glossed: 12, unique: 7, unresolved: 3, contextual: 5, senseReachable: true, active: true },
           };
         }
         return { ok: true, data: null };
@@ -382,7 +382,18 @@ async function checkPopup(version) {
   }
 
   check('版本号已渲染', $('version')?.textContent === `v${version}`, $('version')?.textContent);
-  check('统计三项都来自 content script', $('stat-unique')?.textContent === '7' && $('stat-unresolved')?.textContent === '3');
+  check(
+    '统计都来自 content script',
+    $('stat-unique')?.textContent === '7' &&
+      $('stat-unresolved')?.textContent === '3' &&
+      $('stat-contextual')?.textContent === '5',
+    `unique=${$('stat-unique')?.textContent} unresolved=${$('stat-unresolved')?.textContent} contextual=${$('stat-contextual')?.textContent}`,
+  );
+  check(
+    '语境义未开启时说清楚是「未开启」，而不是让人以为坏了',
+    $('sense-state')?.textContent === '语境义：未开启（可在设置页启用）',
+    $('sense-state')?.textContent,
+  );
   check('显示当前站点', $('site-host')?.textContent === 'example.com', $('site-host')?.textContent);
   check('总开关回填设置', $('toggle-global')?.checked === true);
   check('本站开关回填设置', $('toggle-site')?.checked === true && $('toggle-site')?.disabled === false);
@@ -417,7 +428,8 @@ async function checkPopup(version) {
     requestsOf(state, 'wordmark:set-settings').at(-1)?.patch?.annotateFrom === 'ielts',
   );
 
-  // 重新扫描本页
+  // 重新扫描本页；顺带把语境义打开，验证「通没通」真的会被说出来
+  state.settings.sense.enabled = true;
   $('btn-rescan').dispatchEvent(new dom.window.Event('click'));
   await sleep(30);
   check(
@@ -429,6 +441,11 @@ async function checkPopup(version) {
     '重新扫描后会重新拉取本页统计',
     tabRequestsOf(state, 'wordmark:page-stats').length === 2,
     String(tabRequestsOf(state, 'wordmark:page-stats').length),
+  );
+  check(
+    '语境义生效时会说出替换了多少处',
+    $('sense-state')?.textContent === '语境义：服务已连通，本页替换 5 处',
+    $('sense-state')?.textContent,
   );
 
   $('btn-options').dispatchEvent(new dom.window.Event('click'));

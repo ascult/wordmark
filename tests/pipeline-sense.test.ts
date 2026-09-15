@@ -101,6 +101,17 @@ describe('流水线的语境义回填', () => {
     expect(ctx.renderer.count).toBe(1);
   });
 
+  it('统计本页换成语境义的处数，重扫时清零', async () => {
+    const { picker } = recordingPicker({ engine: '驱动力/推动力' });
+    const ctx = await run('<p>The engine drives great work forward.</p>', { sense: picker });
+    await settle();
+    // 弹窗靠这个数字回答「有没有在生效」——静默回退时它必须是 0 而不是空
+    expect(ctx.pipeline.contextualCount).toBe(1);
+
+    ctx.pipeline.resetSenseBudget();
+    expect(ctx.pipeline.contextualCount).toBe(0);
+  });
+
   it('发给模型的上下文是整句，且不含已插入的中文释义', async () => {
     const { picker, calls } = recordingPicker({ engine: '驱动力', ubiquitous: '无处不在的' });
     await run('<p>The engine is ubiquitous in modern teams everywhere.</p>', { sense: picker });

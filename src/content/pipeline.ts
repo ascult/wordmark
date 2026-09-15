@@ -45,6 +45,8 @@ export class AnnotationPipeline {
   #pending = false;
   /** 本页已经送去挑选语境义的处数，用于 `sense.maxPerPage` 限流。 */
   #senseUsed = 0;
+  /** 本页实际换成语境义的处数，供弹窗回答「有没有生效」。 */
+  #contextual = 0;
   readonly #deps: PipelineDeps;
 
   constructor(deps: PipelineDeps) {
@@ -55,9 +57,15 @@ export class AnnotationPipeline {
     return this.#processing;
   }
 
-  /** 全量重扫时清零语境义配额。 */
+  /** 本页用上语境义的处数。 */
+  get contextualCount(): number {
+    return this.#contextual;
+  }
+
+  /** 全量重扫时清零语境义的配额与计数。 */
   resetSenseBudget(): void {
     this.#senseUsed = 0;
+    this.#contextual = 0;
   }
 
   /**
@@ -199,7 +207,7 @@ export class AnnotationPipeline {
         for (const [id, pick] of picks) {
           const numeric = Number(id);
           if (!Number.isInteger(numeric)) continue;
-          this.#deps.renderer.updateGlossText(numeric, pick.sense);
+          if (this.#deps.renderer.updateGlossText(numeric, pick.sense)) this.#contextual += 1;
         }
       })
       .catch(() => {

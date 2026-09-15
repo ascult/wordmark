@@ -64,6 +64,13 @@ export interface SenseSelectorOptions {
  */
 export interface SensePicker {
   pick(items: readonly SenseCandidate[]): Promise<Map<string, SensePick>>;
+  /**
+   * 最近一次请求有没有到达服务：`null` = 还没试过。
+   *
+   * 语境义是**静默回退**的（服务没起、超时都只是「这次没拿到」），所以「到底通没通」
+   * 必须有个地方能问出来，否则用户无从判断这个功能有没有在工作。可选方法：测试里的假实现不必实现它。
+   */
+  reachable?(): boolean | null;
 }
 
 interface SelectResponseItem {
@@ -89,6 +96,8 @@ export class SenseSelector implements SensePicker {
   readonly #settings: () => SenseSettings;
   readonly #request: SenseRequestFn;
   readonly #cache: LruCache<SensePick | null>;
+  /** 最近一次请求的结果；未尝试过为 null。 */
+  #reachable: boolean | null = null;
 
   constructor(options: SenseSelectorOptions) {
     this.#settings = options.settings;
@@ -98,6 +107,10 @@ export class SenseSelector implements SensePicker {
 
   get cacheSize(): number {
     return this.#cache.size;
+  }
+
+  reachable(): boolean | null {
+    return this.#reachable;
   }
 
   /** 该词在该句下已缓存的结果；`undefined` 表示没查过，`null` 表示查过但没有可用义项。 */
@@ -136,6 +149,7 @@ export class SenseSelector implements SensePicker {
     for (let start = 0; start < limited.length; start += CHUNK_SIZE) {
       const chunk = limited.slice(start, start + CHUNK_SIZE);
       const fetched = await this.#fetchPicks(settings, chunk);
+      this.#reachable = fetched !== null;
       // 整批失败：**什么都不缓存**。把失败也记成「没得选」，会让一次超时永久禁掉这一批——
       // 滚动或重扫时也不再重试（这正是本轮修掉的缺陷）。
       if (fetched === null) continue;

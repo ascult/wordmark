@@ -25,6 +25,10 @@ export interface PageStats {
   unique: number;
   /** 字典中未命中、且未开启在线查询的候选词数量。 */
   unresolved: number;
+  /** 本页有多少处释义被换成了语境义。 */
+  contextual: number;
+  /** 语境义服务是否可达；未启用或从未尝试过时为 false。 */
+  senseReachable: boolean;
   /** 页面是否被本扩展跳过。 */
   active: boolean;
 }

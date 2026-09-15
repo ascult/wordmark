@@ -44,6 +44,26 @@ function renderStats(info: PageStats | null): void {
   $('stat-glossed').textContent = info ? String(info.glossed) : '–';
   $('stat-unique').textContent = info ? String(info.unique) : '–';
   $('stat-unresolved').textContent = info ? String(info.unresolved) : '–';
+  $('stat-contextual').textContent = info ? String(info.contextual) : '–';
+}
+
+/**
+ * 语境义是**静默回退**的：服务没起、超时、词不在义项表里，页面表现完全一样。
+ * 所以「通没通」必须在这里说清楚——否则用户没有任何办法知道这个功能有没有在工作。
+ */
+function renderSenseState(enabled: boolean, info: PageStats | null): void {
+  const node = $('sense-state');
+  if (!enabled) {
+    node.textContent = '语境义：未开启（可在设置页启用）';
+    return;
+  }
+  if (info === null) {
+    node.textContent = '语境义：当前页面不支持';
+    return;
+  }
+  node.textContent = info.senseReachable
+    ? `语境义：服务已连通，本页替换 ${info.contextual} 处`
+    : '语境义：服务不可达，本页按词典义显示';
 }
 
 async function main(): Promise<void> {
@@ -59,6 +79,7 @@ async function main(): Promise<void> {
   const res = await sendRequest<StateSnapshot>({ type: 'wordmark:get-state', host });
   if (!res.ok) {
     $('hint').textContent = '无法读取设置，请重新打开扩展。';
+    $('sense-state').textContent = '语境义：无法读取设置';
     renderStats(info);
     return;
   }
@@ -73,6 +94,7 @@ async function main(): Promise<void> {
   siteToggle.disabled = !supported;
   siteToggle.title = supported ? '' : '当前页面不支持内容脚本';
   levelSelect.value = state.settings.annotateFrom;
+  renderSenseState(state.settings.sense.enabled, info);
 
   globalToggle.addEventListener('change', () => {
     void sendRequest({ type: 'wordmark:set-settings', patch: { enabled: globalToggle.checked } });
@@ -106,17 +128,21 @@ async function main(): Promise<void> {
       } catch {
         // 页面没有内容脚本，忽略。
       }
-      renderStats(await fetchPageInfo(tabId));
+      const fresh = await fetchPageInfo(tabId);
+      renderStats(fresh);
+      renderSenseState(state.settings.sense.enabled, fresh);
     })();
   });
 
   if (!supported) {
     $('hint').textContent = '当前页面（如新标签页、chrome:// 页面）不支持内容脚本。';
+    $('sense-state').textContent = '语境义：当前页面不支持';
     renderStats(null);
     return;
   }
 
   renderStats(info);
+  renderSenseState(state.settings.sense.enabled, info);
 }
 
 void main();
