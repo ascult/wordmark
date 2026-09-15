@@ -94,7 +94,7 @@ function senseFitsTranslation(sense, translation) {
 }
 
 async function main() {
-  const sensesTable = JSON.parse(await readFile(path.join(__dirname0(), 'senses.json'), 'utf8'));
+  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'data', 'senses', 'cet4.json'), 'utf8'));
 
   const all = await loadSentences();
   const items = [];

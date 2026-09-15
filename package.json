@@ -25,6 +25,7 @@
     "try": "node scripts/try-article.mjs",
     "bench": "node scripts/article-bench.mjs",
     "import:dict": "node scripts/import-typewords.mjs",
+    "import:senses": "node scripts/import-senses.mjs",
     "check": "npm run dict && npm run typecheck && npm run lint && npm run test && npm run build:prod && npm run validate && npm run smoke && npm run smoke:ui",
     "zip": "node scripts/package.mjs",
     "proto:align": "node prototype/mt-align/run.mjs",

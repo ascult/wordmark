@@ -54,7 +54,7 @@ function localize(sense, translation) {
 }
 
 async function main() {
-  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'prototype', 'mt-align', 'senses.json'), 'utf8'));
+  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'data', 'senses', 'cet4.json'), 'utf8'));
   const html = await readFile(path.join(ROOT, '.tmp-articles', 'https_paulgraham_com_greatwork_html.html'), 'utf8');
   const sentences = splitSentences(
     html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&#39;|&rsquo;/g, "'").replace(/\s+/g, ' '),

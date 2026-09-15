@@ -3,6 +3,9 @@
  *
  * 【原型代码，不是生产实现】
  *
+ * 注意：正式的导入脚本是 `scripts/import-senses.mjs`（`npm run import:senses`），逻辑与此相同。
+ * 两者都写 `data/senses/cet4.json`——义项表只能有一份，否则「71.8%」对应不上确定的产物。
+ *
  * 现有词表 dict.zh.json 每个词只有一条压缩过的释义（≤14 字），没有义项可选。
  * 但上游 CET4_T.json 的 trans[].cn 里本来就有多个义项（用「；」分隔），
  * 这里把它们拆出来，产出 word → [义项…]，每个义项 ≤10 字，最多 6 个。
@@ -14,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SOURCE = path.join(ROOT, '.tmp-ref', 'TypeWords', 'public', 'dicts', 'en', 'word', 'CET4_T.json');
-const OUT = path.join(ROOT, 'prototype', 'mt-align', 'senses.json');
+const OUT = path.join(ROOT, 'data', 'senses', 'cet4.json');
 const MAX_SENSES = 6;
 const MAX_CHARS = 10;
 

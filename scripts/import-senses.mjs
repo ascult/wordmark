@@ -22,10 +22,9 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { MAX_ATOM_CHARS, MAX_SENSES_PER_WORD } from './senses-schema.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const MAX_SENSES = 6;
-const MAX_ATOM_CHARS = 10;
 
 /**
  * 把一个义项组整理成候选：组内同义词用 / 分隔，便于人看也便于模型区分。
@@ -78,9 +77,9 @@ async function main() {
       for (const part of String(item.cn ?? '').split(/[；;]/)) {
         const sense = cleanGroup(part);
         if (sense && !senses.includes(sense)) senses.push(sense);
-        if (senses.length >= MAX_SENSES) break;
+        if (senses.length >= MAX_SENSES_PER_WORD) break;
       }
-      if (senses.length >= MAX_SENSES) break;
+      if (senses.length >= MAX_SENSES_PER_WORD) break;
     }
     if (senses.length === 0) continue;
     table[word] = senses;

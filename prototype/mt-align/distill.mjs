@@ -113,7 +113,7 @@ async function main() {
     console.error(`缺少 key。三种给法任选：--api-key=xxx / 环境变量 OPENAI_API_KEY / 写进 ${path.relative(ROOT, KEY_FILE)}`);
     process.exit(1);
   }
-  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'prototype', 'mt-align', 'senses.json'), 'utf8'));
+  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'data', 'senses', 'cet4.json'), 'utf8'));
 
   // 先问服务端要模型 id（用户只说「qwen3.5 9b」，真实 id 以服务端为准）
   const probe = new ChatClient({ baseUrl: BASE_URL, apiKey: API_KEY, model: 'probe' });

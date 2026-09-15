@@ -27,7 +27,7 @@ const flag = (name, fallback) => {
 
 const ARTICLE = flag('article', '.tmp-articles/https_paulgraham_com_greatwork_html.html');
 const OUT = flag('out', 'prototype/mt-align/xenc/annotate-input.json');
-const SENSES = flag('senses', 'prototype/mt-align/senses.json');
+const SENSES = flag('senses', 'data/senses/cet4.json');
 /** 一句话里最多取几个目标词：真实文章里长句可能命中十来个，全打分会淹没输出。 */
 const PER_SENTENCE = Number(flag('per-sentence', 3));
 /** 句子太短则上下文不足，跳过（与生产一致的下限）。 */

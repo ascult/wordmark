@@ -116,7 +116,7 @@ async function main() {
     console.error('缺少 key（--api-key 或 --api-key-file）');
     process.exit(1);
   }
-  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'prototype', 'mt-align', 'senses.json'), 'utf8'));
+  const sensesTable = JSON.parse(await readFile(path.join(ROOT, 'data', 'senses', 'cet4.json'), 'utf8'));
   const client = new ChatClient({ baseUrl: BASE_URL, apiKey, model: MODEL });
 
   // === 1. 抽样本 ===

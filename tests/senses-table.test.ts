@@ -3,19 +3,16 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import dictJson from '../src/data/dict.zh.json';
 import type { DictEntry } from '../src/core/types.js';
+import { MAX_SENSES_PER_WORD, MAX_SENSE_CHARS } from '../scripts/senses-schema.mjs';
 
 const DICT = dictJson as unknown as DictEntry[];
 const HEADS = new Set(DICT.map((entry) => entry.word));
 // vitest 的 jsdom 环境里 `import.meta.url` 不是 file: 协议，按工作目录定位（= 仓库根）
 const SENSES_DIR = path.join(process.cwd(), 'data', 'senses');
-const FILES = readdirSync(SENSES_DIR).filter((name) => name.endsWith('.json'));
-
-/** 生成器的结构上限：义项由最多 3 个「原子」用 `/` 连接，单原子 ≤10 字。 */
-const MAX_SENSE_CHARS = 32;
-const MAX_SENSES_PER_WORD = 6;
 
 function loadTables(): Array<{ file: string; table: Record<string, string[]> }> {
-  return FILES.map((file) => ({
+  const files = readdirSync(SENSES_DIR).filter((name) => name.endsWith('.json'));
+  return files.map((file) => ({
     file,
     table: JSON.parse(readFileSync(`${SENSES_DIR}/${file}`, 'utf8')) as Record<string, string[]>,
   }));
@@ -23,8 +20,9 @@ function loadTables(): Array<{ file: string; table: Record<string, string[]> }> 
 
 describe('多义项表：打分服务的必需输入', () => {
   it('至少有一份表，且每个词元都能在词表里找到', () => {
-    expect(FILES.length).toBeGreaterThan(0);
-    for (const { file, table } of loadTables()) {
+    const tables = loadTables();
+    expect(tables.length).toBeGreaterThan(0);
+    for (const { file, table } of tables) {
       for (const word of Object.keys(table)) {
         expect(HEADS.has(word), `${file} 里的 ${word} 不在词表里`).toBe(true);
       }
