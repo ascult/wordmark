@@ -1,0 +1,356 @@
+[
+  {
+    "word": "intelligence",
+    "pos": "n.",
+    "gloss": "智力",
+    "level": "cet4"
+  },
+  {
+    "word": "frequently",
+    "pos": "adv.",
+    "gloss": "频繁地",
+    "level": "cet4"
+  },
+  {
+    "word": "comprehend",
+    "pos": "v.",
+    "gloss": "理解",
+    "level": "cet6"
+  },
+  {
+    "word": "conviction",
+    "pos": "n.",
+    "gloss": "信念",
+    "level": "cet6"
+  },
+  {
+    "word": "ignorant",
+    "pos": "adj.",
+    "gloss": "无知的",
+    "level": "cet6"
+  },
+  {
+    "word": "exponential",
+    "pos": "adj.",
+    "gloss": "指数的",
+    "level": "gre"
+  },
+  {
+    "word": "improvement",
+    "pos": "n.",
+    "gloss": "改进",
+    "level": "cet4"
+  },
+  {
+    "word": "elegance",
+    "pos": "n.",
+    "gloss": "优雅",
+    "level": "cet6"
+  },
+  {
+    "word": "excessively",
+    "pos": "adv.",
+    "gloss": "过度地",
+    "level": "cet6"
+  },
+  {
+    "word": "certainty",
+    "pos": "n.",
+    "gloss": "确定性",
+    "level": "cet6"
+  },
+  {
+    "word": "ignorance",
+    "pos": "n.",
+    "gloss": "无知",
+    "level": "cet6"
+  },
+  {
+    "word": "intelligent",
+    "pos": "adj.",
+    "gloss": "聪明的",
+    "level": "cet4"
+  },
+  {
+    "word": "temptation",
+    "pos": "n.",
+    "gloss": "诱惑",
+    "level": "cet6"
+  },
+  {
+    "word": "sacrifice",
+    "pos": "n.",
+    "gloss": "牺牲",
+    "level": "cet4"
+  },
+  {
+    "word": "variation",
+    "pos": "n.",
+    "gloss": "变化",
+    "level": "cet6"
+  },
+  {
+    "word": "associate",
+    "pos": "adj.",
+    "gloss": "关联",
+    "level": "cet4"
+  },
+  {
+    "word": "strategy",
+    "pos": "n.",
+    "gloss": "策略",
+    "level": "cet4"
+  },
+  {
+    "word": "competition",
+    "pos": "n.",
+    "gloss": "竞争",
+    "level": "cet4"
+  },
+  {
+    "word": "consistent",
+    "pos": "adj.",
+    "gloss": "一致的",
+    "level": "cet4"
+  },
+  {
+    "word": "uncommon",
+    "pos": "adj.",
+    "gloss": "罕见的",
+    "level": "cet6"
+  },
+  {
+    "word": "distribute",
+    "pos": "v.",
+    "gloss": "分配",
+    "level": "cet4"
+  },
+  {
+    "word": "infinitely",
+    "pos": "adv.",
+    "gloss": "无限地",
+    "level": "cet6"
+  },
+  {
+    "word": "significant",
+    "pos": "adj.",
+    "gloss": "重要的",
+    "level": "cet4"
+  },
+  {
+    "word": "absolute",
+    "pos": "adj.",
+    "gloss": "绝对的",
+    "level": "cet4"
+  },
+  {
+    "word": "previously",
+    "pos": "adv.",
+    "gloss": "先前",
+    "level": "cet4"
+  },
+  {
+    "word": "manufacture",
+    "pos": "n.",
+    "gloss": "制造",
+    "level": "cet4"
+  },
+  {
+    "word": "explicitly",
+    "pos": "adv.",
+    "gloss": "明确地",
+    "level": "cet6"
+  },
+  {
+    "word": "dismiss",
+    "pos": "v.",
+    "gloss": "驳回",
+    "level": "cet6"
+  },
+  {
+    "word": "ridiculous",
+    "pos": "adj.",
+    "gloss": "荒谬的",
+    "level": "cet6"
+  },
+  {
+    "word": "applicable",
+    "pos": "adj.",
+    "gloss": "适用的",
+    "level": "ielts"
+  },
+  {
+    "word": "desperate",
+    "pos": "adj.",
+    "gloss": "绝望的",
+    "level": "cet4"
+  },
+  {
+    "word": "optimistic",
+    "pos": "adj.",
+    "gloss": "乐观的",
+    "level": "cet4"
+  },
+  {
+    "word": "underestimate",
+    "pos": "v.",
+    "gloss": "低估",
+    "level": "cet6"
+  },
+  {
+    "word": "superiority",
+    "pos": "n.",
+    "gloss": "优越性",
+    "level": "ielts"
+  },
+  {
+    "word": "earnestness",
+    "pos": "n.",
+    "gloss": "认真",
+    "level": "gre"
+  },
+  {
+    "word": "composition",
+    "pos": "n.",
+    "gloss": "构成",
+    "level": "cet4"
+  },
+  {
+    "word": "willingness",
+    "pos": "n.",
+    "gloss": "意愿",
+    "level": "cet6"
+  },
+  {
+    "word": "estimate",
+    "pos": "v.",
+    "gloss": "估计",
+    "level": "cet4"
+  },
+  {
+    "word": "ingenious",
+    "pos": "adj.",
+    "gloss": "巧妙的",
+    "level": "gre"
+  },
+  {
+    "word": "personality",
+    "pos": "n.",
+    "gloss": "个性",
+    "level": "cet4"
+  },
+  {
+    "word": "primarily",
+    "pos": "adv.",
+    "gloss": "主要地",
+    "level": "cet6"
+  },
+  {
+    "word": "inspiring",
+    "pos": "adj.",
+    "gloss": "鼓舞人心的",
+    "level": "cet6"
+  },
+  {
+    "word": "undiscovered",
+    "pos": "adj.",
+    "gloss": "未被发现的",
+    "level": "cet6"
+  },
+  {
+    "word": "regardless",
+    "pos": "adv.",
+    "gloss": "无论如何",
+    "level": "cet4"
+  },
+  {
+    "word": "distraction",
+    "pos": "n.",
+    "gloss": "分心",
+    "level": "cet6"
+  },
+  {
+    "word": "misleading",
+    "pos": "adj.",
+    "gloss": "误导性的",
+    "level": "ielts"
+  },
+  {
+    "word": "uncertain",
+    "pos": "adj.",
+    "gloss": "不确定的",
+    "level": "cet4"
+  },
+  {
+    "word": "subscribe",
+    "pos": "v.",
+    "gloss": "订阅",
+    "level": "cet6"
+  },
+  {
+    "word": "calculus",
+    "pos": "n.",
+    "gloss": "微积分",
+    "level": "ielts"
+  },
+  {
+    "word": "durability",
+    "pos": "n.",
+    "gloss": "耐久性",
+    "level": "cet6"
+  },
+  {
+    "word": "equivalent",
+    "pos": "adj.",
+    "gloss": "等价的",
+    "level": "cet6"
+  },
+  {
+    "word": "mortality",
+    "pos": "n.",
+    "gloss": "死亡率",
+    "level": "ielts"
+  },
+  {
+    "word": "proficiency",
+    "pos": "n.",
+    "gloss": "熟练",
+    "level": "ielts"
+  },
+  {
+    "word": "subsequent",
+    "pos": "adj.",
+    "gloss": "随后的",
+    "level": "ielts"
+  },
+  {
+    "word": "passionate",
+    "pos": "adj.",
+    "gloss": "热情的",
+    "level": "cet4"
+  },
+  {
+    "word": "tradition",
+    "pos": "n.",
+    "gloss": "传统",
+    "level": "cet4"
+  },
+  {
+    "word": "augmented",
+    "pos": "adj.",
+    "gloss": "增强的",
+    "level": "gre"
+  },
+  {
+    "word": "heliocentric",
+    "pos": "adj.",
+    "gloss": "日心说的",
+    "level": "gre"
+  },
+  {
+    "word": "motivation",
+    "pos": "n.",
+    "gloss": "动机",
+    "level": "cet6"
+  }
+]

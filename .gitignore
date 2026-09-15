@@ -1,0 +1,23 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+.vite/
+.vitest/
+.npm-cache/
+wordmark-v*.zip
+
+.tmp-articles/
+.tmp-ref/
+.tmp-chrome/
+.tmp-shots/
+.tmp-probe/
+.tmp-probe/teacher-key
+
+# 打分器与训练产物：大二进制不进仓库（见 .scratch/context-aware-glosses/spec.md）
+prototype/mt-align/xenc/*.safetensors
+prototype/mt-align/xenc/*.npz
+prototype/mt-align/adapters/
+prototype/mt-align/adapters-v2/
+**/__pycache__/

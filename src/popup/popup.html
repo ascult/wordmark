@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>wordmark</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="head">
+      <h1>wordmark</h1>
+      <span class="version" id="version"></span>
+    </header>
+
+    <section class="stats" id="stats" aria-live="polite">
+      <div class="stat">
+        <span class="stat-value" id="stat-glossed">–</span>
+        <span class="stat-label">本页释义</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-unique">–</span>
+        <span class="stat-label">词元</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-unresolved">–</span>
+        <span class="stat-label">未收录</span>
+      </div>
+    </section>
+
+    <section class="rows">
+      <label class="row">
+        <span class="row-label">启用 wordmark</span>
+        <input type="checkbox" id="toggle-global" />
+      </label>
+      <label class="row">
+        <span class="row-label">在本站生效<small id="site-host"></small></span>
+        <input type="checkbox" id="toggle-site" />
+      </label>
+      <label class="row">
+        <span class="row-label">生词线<small>只标注该难度及更难的词</small></span>
+        <select id="select-level">
+          <option value="basic">基础词及以上</option>
+          <option value="cet4">CET-4 及以上</option>
+          <option value="cet6">CET-6 及以上</option>
+          <option value="ielts">IELTS 及以上</option>
+          <option value="gre">仅 GRE</option>
+        </select>
+      </label>
+    </section>
+
+    <p class="hint" id="hint">点击页面上的中文释义，可把该词标记为「已知词」。</p>
+
+    <footer class="foot">
+      <button type="button" id="btn-rescan" class="btn">重新扫描本页</button>
+      <button type="button" id="btn-options" class="btn btn-primary">设置</button>
+    </footer>
+
+    <script src="popup.js" defer></script>
+  </body>
+</html>

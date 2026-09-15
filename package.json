@@ -1,0 +1,52 @@
+{
+  "name": "wordmark",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome 扩展：把网页中的英文生词就地内联标注为英文→中文释义，保持阅读流。",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/build.mjs --watch",
+    "build": "node scripts/build.mjs",
+    "build:prod": "node scripts/build.mjs --minify",
+    "dict": "node scripts/build-dict.mjs",
+    "icons": "node scripts/generate-icons.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "node scripts/validate-dist.mjs",
+    "smoke": "node scripts/smoke-dist.mjs",
+    "smoke:ui": "node scripts/smoke-ui.mjs",
+    "verify:browser": "node scripts/browser-shots.mjs",
+    "try": "node scripts/try-article.mjs",
+    "bench": "node scripts/article-bench.mjs",
+    "import:dict": "node scripts/import-typewords.mjs",
+    "check": "npm run dict && npm run typecheck && npm run lint && npm run test && npm run build:prod && npm run validate && npm run smoke && npm run smoke:ui",
+    "zip": "node scripts/package.mjs",
+    "proto:align": "node prototype/mt-align/run.mjs",
+    "proto:align:proxy": "NODE_USE_ENV_PROXY=1 HTTPS_PROXY=http://127.0.0.1:7890 node prototype/mt-align/run.mjs",
+    "proto:align:batch": "node prototype/mt-align/batch.mjs",
+    "proto:refine": "node prototype/mt-align/refine.mjs",
+    "proto:match": "node prototype/mt-align/match-run.mjs",
+    "proto:select": "node prototype/mt-align/select-run.mjs",
+    "proto:distill": "node prototype/mt-align/distill.mjs",
+    "proto:crosscheck": "node prototype/mt-align/crosscheck.mjs",
+    "proto:dataset": "node prototype/mt-align/make-dataset.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/chrome": "^0.2.9",
+    "@types/node": "^22.20.2",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0",
+    "jsdom": "^30.0.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^5.0.0"
+  }
+}

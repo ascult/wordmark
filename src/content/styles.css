@@ -1,0 +1,80 @@
+/*
+ * wordmark 注入样式。
+ *
+ * 全部通过 manifest 声明式注入：不使用 <style> 标签或内联 style 属性，
+ * 因此在严格 CSP 的站点上也照常生效。
+ */
+
+.wordmark-gloss {
+  cursor: help;
+}
+
+.wordmark-def {
+  margin-inline-start: 0.15em;
+  font-size: 0.82em;
+  font-weight: 500;
+  line-height: 1;
+  color: #0b7285;
+  word-break: keep-all;
+  /* 点中文部分 = 标记为「已知词」 */
+  cursor: pointer;
+  /* 选中/复制正文时只带走英文原文，不把释义混进去。 */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 三种视觉风格，由 <html> 上的类切换 */
+html.wordmark-style-underline .wordmark-gloss {
+  border-bottom: 1px dashed rgba(11, 114, 133, 0.55);
+}
+
+html.wordmark-style-boxed .wordmark-def {
+  padding: 0 0.2em;
+  border-radius: 3px;
+  background-color: rgba(11, 114, 133, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .wordmark-def {
+    color: #63e6be;
+  }
+
+  html.wordmark-style-underline .wordmark-gloss {
+    border-bottom-color: rgba(99, 230, 190, 0.5);
+  }
+
+  html.wordmark-style-boxed .wordmark-def {
+    background-color: rgba(99, 230, 190, 0.16);
+  }
+}
+
+/* 打印时保留干净原文 */
+@media print {
+  .wordmark-def {
+    display: none;
+  }
+}
+
+/* 标记「已知词」后的轻提示 */
+.wordmark-toast {
+  position: fixed;
+  z-index: 2147483647;
+  inset-inline-end: 16px;
+  inset-block-end: 16px;
+  max-width: 320px;
+  padding: 10px 14px;
+  font: 500 13px/1.5 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #f8f9fa;
+  background: rgba(20, 22, 26, 0.92);
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+
+.wordmark-toast[data-visible="1"] {
+  opacity: 1;
+  transform: translateY(0);
+}

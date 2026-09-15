@@ -1,0 +1,356 @@
+[
+  {
+    "word": "determined",
+    "pos": "adj.",
+    "gloss": "坚定的",
+    "level": "cet4"
+  },
+  {
+    "word": "superior",
+    "pos": "adj.",
+    "gloss": "更好的",
+    "level": "cet4"
+  },
+  {
+    "word": "ambitious",
+    "pos": "adj.",
+    "gloss": "有抱负的",
+    "level": "cet4"
+  },
+  {
+    "word": "extraordinary",
+    "pos": "adj.",
+    "gloss": "非凡的",
+    "level": "cet4"
+  },
+  {
+    "word": "observation",
+    "pos": "n.",
+    "gloss": "观察",
+    "level": "cet4"
+  },
+  {
+    "word": "contempt",
+    "pos": "n.",
+    "gloss": "蔑视",
+    "level": "cet6"
+  },
+  {
+    "word": "impression",
+    "pos": "n.",
+    "gloss": "印象",
+    "level": "cet4"
+  },
+  {
+    "word": "rational",
+    "pos": "adj.",
+    "gloss": "理性的",
+    "level": "cet4"
+  },
+  {
+    "word": "humanity",
+    "pos": "n.",
+    "gloss": "人类",
+    "level": "cet4"
+  },
+  {
+    "word": "affectation",
+    "pos": "n.",
+    "gloss": "做作",
+    "level": "gre"
+  },
+  {
+    "word": "remarkable",
+    "pos": "adj.",
+    "gloss": "显著的",
+    "level": "cet4"
+  },
+  {
+    "word": "advancement",
+    "pos": "n.",
+    "gloss": "进步",
+    "level": "cet6"
+  },
+  {
+    "word": "principle",
+    "pos": "n.",
+    "gloss": "原则",
+    "level": "cet4"
+  },
+  {
+    "word": "intellectual",
+    "pos": "adj.",
+    "gloss": "智力的",
+    "level": "cet4"
+  },
+  {
+    "word": "preserve",
+    "pos": "v.",
+    "gloss": "保存",
+    "level": "cet4"
+  },
+  {
+    "word": "revolution",
+    "pos": "n.",
+    "gloss": "革命",
+    "level": "cet4"
+  },
+  {
+    "word": "imagination",
+    "pos": "n.",
+    "gloss": "想象力",
+    "level": "cet4"
+  },
+  {
+    "word": "individual",
+    "pos": "n.",
+    "gloss": "个人",
+    "level": "cet4"
+  },
+  {
+    "word": "purchase",
+    "pos": "v.",
+    "gloss": "购买",
+    "level": "cet4"
+  },
+  {
+    "word": "unconsciously",
+    "pos": "adv.",
+    "gloss": "不知不觉地",
+    "level": "ielts"
+  },
+  {
+    "word": "presence",
+    "pos": "n.",
+    "gloss": "存在",
+    "level": "cet4"
+  },
+  {
+    "word": "multiple",
+    "pos": "adj.",
+    "gloss": "多个的",
+    "level": "cet4"
+  },
+  {
+    "word": "prediction",
+    "pos": "n.",
+    "gloss": "预测",
+    "level": "cet4"
+  },
+  {
+    "word": "talented",
+    "pos": "adj.",
+    "gloss": "有才能的",
+    "level": "cet4"
+  },
+  {
+    "word": "rejection",
+    "pos": "n.",
+    "gloss": "拒绝",
+    "level": "cet6"
+  },
+  {
+    "word": "magnitude",
+    "pos": "n.",
+    "gloss": "巨大",
+    "level": "ielts"
+  },
+  {
+    "word": "dependent",
+    "pos": "adj.",
+    "gloss": "依赖的",
+    "level": "cet4"
+  },
+  {
+    "word": "definition",
+    "pos": "n.",
+    "gloss": "定义",
+    "level": "cet4"
+  },
+  {
+    "word": "formality",
+    "pos": "n.",
+    "gloss": "形式",
+    "level": "cet6"
+  },
+  {
+    "word": "trajectory",
+    "pos": "n.",
+    "gloss": "轨迹",
+    "level": "ielts"
+  },
+  {
+    "word": "creativity",
+    "pos": "n.",
+    "gloss": "创造力",
+    "level": "cet4"
+  },
+  {
+    "word": "impressive",
+    "pos": "adj.",
+    "gloss": "令人印象深刻的",
+    "level": "cet4"
+  },
+  {
+    "word": "privilege",
+    "pos": "n.",
+    "gloss": "特权",
+    "level": "cet4"
+  },
+  {
+    "word": "distinctive",
+    "pos": "adj.",
+    "gloss": "独特的",
+    "level": "cet6"
+  },
+  {
+    "word": "deliberately",
+    "pos": "adv.",
+    "gloss": "故意地",
+    "level": "cet6"
+  },
+  {
+    "word": "comparatively",
+    "pos": "adv.",
+    "gloss": "相对地",
+    "level": "ielts"
+  },
+  {
+    "word": "integrity",
+    "pos": "n.",
+    "gloss": "诚信",
+    "level": "cet6"
+  },
+  {
+    "word": "conquer",
+    "pos": "v.",
+    "gloss": "征服",
+    "level": "cet4"
+  },
+  {
+    "word": "conception",
+    "pos": "n.",
+    "gloss": "观念",
+    "level": "cet6"
+  },
+  {
+    "word": "permanent",
+    "pos": "adj.",
+    "gloss": "永久的",
+    "level": "cet4"
+  },
+  {
+    "word": "selection",
+    "pos": "n.",
+    "gloss": "选择",
+    "level": "cet4"
+  },
+  {
+    "word": "independently",
+    "pos": "adv.",
+    "gloss": "独立地",
+    "level": "cet4"
+  },
+  {
+    "word": "overestimate",
+    "pos": "v.",
+    "gloss": "高估",
+    "level": "cet6"
+  },
+  {
+    "word": "criticism",
+    "pos": "n.",
+    "gloss": "批评",
+    "level": "cet4"
+  },
+  {
+    "word": "worthless",
+    "pos": "adj.",
+    "gloss": "毫无价值的",
+    "level": "cet4"
+  },
+  {
+    "word": "incomplete",
+    "pos": "adj.",
+    "gloss": "不完整的",
+    "level": "cet4"
+  },
+  {
+    "word": "substantial",
+    "pos": "adj.",
+    "gloss": "大量的",
+    "level": "cet6"
+  },
+  {
+    "word": "habitual",
+    "pos": "adj.",
+    "gloss": "习惯性的",
+    "level": "cet6"
+  },
+  {
+    "word": "algorithm",
+    "pos": "n.",
+    "gloss": "算法",
+    "level": "ielts"
+  },
+  {
+    "word": "conjunction",
+    "pos": "n.",
+    "gloss": "结合",
+    "level": "cet4"
+  },
+  {
+    "word": "enormous",
+    "pos": "adj.",
+    "gloss": "巨大的",
+    "level": "cet4"
+  },
+  {
+    "word": "frequency",
+    "pos": "n.",
+    "gloss": "频率",
+    "level": "cet4"
+  },
+  {
+    "word": "precision",
+    "pos": "n.",
+    "gloss": "精确",
+    "level": "cet6"
+  },
+  {
+    "word": "skeptical",
+    "pos": "adj.",
+    "gloss": "怀疑的",
+    "level": "ielts"
+  },
+  {
+    "word": "metaphor",
+    "pos": "n.",
+    "gloss": "隐喻",
+    "level": "ielts"
+  },
+  {
+    "word": "temporary",
+    "pos": "adj.",
+    "gloss": "暂时的",
+    "level": "cet6"
+  },
+  {
+    "word": "undervalued",
+    "pos": "adj.",
+    "gloss": "被低估的",
+    "level": "gre"
+  },
+  {
+    "word": "futurist",
+    "pos": "n.",
+    "gloss": "未来主义者",
+    "level": "ielts"
+  },
+  {
+    "word": "groundbreaking",
+    "pos": "adj.",
+    "gloss": "开创性的",
+    "level": "ielts"
+  }
+]

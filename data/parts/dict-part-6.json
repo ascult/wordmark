@@ -1,0 +1,356 @@
+[
+  {
+    "word": "curiosity",
+    "pos": "n.",
+    "gloss": "好奇心",
+    "level": "cet4"
+  },
+  {
+    "word": "expectation",
+    "pos": "n.",
+    "gloss": "期望",
+    "level": "cet4"
+  },
+  {
+    "word": "reasonable",
+    "pos": "adj.",
+    "gloss": "合理的",
+    "level": "cet4"
+  },
+  {
+    "word": "indifferent",
+    "pos": "adj.",
+    "gloss": "冷漠的",
+    "level": "cet6"
+  },
+  {
+    "word": "occasionally",
+    "pos": "adv.",
+    "gloss": "偶尔",
+    "level": "cet4"
+  },
+  {
+    "word": "accomplished",
+    "pos": "adj.",
+    "gloss": "有造诣的",
+    "level": "cet6"
+  },
+  {
+    "word": "necessarily",
+    "pos": "adv.",
+    "gloss": "必然地",
+    "level": "cet4"
+  },
+  {
+    "word": "confusion",
+    "pos": "n.",
+    "gloss": "困惑",
+    "level": "cet4"
+  },
+  {
+    "word": "probability",
+    "pos": "n.",
+    "gloss": "概率",
+    "level": "cet4"
+  },
+  {
+    "word": "nonsense",
+    "pos": "n.",
+    "gloss": "胡说",
+    "level": "cet6"
+  },
+  {
+    "word": "sufficiently",
+    "pos": "adv.",
+    "gloss": "充分地",
+    "level": "cet6"
+  },
+  {
+    "word": "colleague",
+    "pos": "n.",
+    "gloss": "同事",
+    "level": "cet6"
+  },
+  {
+    "word": "distinction",
+    "pos": "n.",
+    "gloss": "区别",
+    "level": "cet6"
+  },
+  {
+    "word": "sufficient",
+    "pos": "adj.",
+    "gloss": "足够的",
+    "level": "cet4"
+  },
+  {
+    "word": "unreasonable",
+    "pos": "adj.",
+    "gloss": "不合理的",
+    "level": "cet6"
+  },
+  {
+    "word": "accordingly",
+    "pos": "adv.",
+    "gloss": "相应地",
+    "level": "cet6"
+  },
+  {
+    "word": "continually",
+    "pos": "adv.",
+    "gloss": "不断地",
+    "level": "ielts"
+  },
+  {
+    "word": "independent",
+    "pos": "adj.",
+    "gloss": "独立的",
+    "level": "cet4"
+  },
+  {
+    "word": "consciously",
+    "pos": "adv.",
+    "gloss": "有意识地",
+    "level": "cet6"
+  },
+  {
+    "word": "distribution",
+    "pos": "n.",
+    "gloss": "分布",
+    "level": "cet6"
+  },
+  {
+    "word": "accurate",
+    "pos": "adj.",
+    "gloss": "准确的",
+    "level": "cet4"
+  },
+  {
+    "word": "innovation",
+    "pos": "n.",
+    "gloss": "创新",
+    "level": "cet6"
+  },
+  {
+    "word": "reputation",
+    "pos": "n.",
+    "gloss": "名声",
+    "level": "cet6"
+  },
+  {
+    "word": "genuinely",
+    "pos": "adv.",
+    "gloss": "真正地",
+    "level": "cet6"
+  },
+  {
+    "word": "deserve",
+    "pos": "v.",
+    "gloss": "值得",
+    "level": "cet4"
+  },
+  {
+    "word": "thorough",
+    "pos": "adj.",
+    "gloss": "彻底的",
+    "level": "cet6"
+  },
+  {
+    "word": "recommendation",
+    "pos": "n.",
+    "gloss": "推荐",
+    "level": "cet6"
+  },
+  {
+    "word": "encounter",
+    "pos": "v.",
+    "gloss": "遇到",
+    "level": "cet6"
+  },
+  {
+    "word": "perception",
+    "pos": "n.",
+    "gloss": "感知",
+    "level": "cet6"
+  },
+  {
+    "word": "consciousness",
+    "pos": "n.",
+    "gloss": "意识",
+    "level": "cet6"
+  },
+  {
+    "word": "identical",
+    "pos": "adj.",
+    "gloss": "相同的",
+    "level": "cet6"
+  },
+  {
+    "word": "cultivate",
+    "pos": "v.",
+    "gloss": "培养",
+    "level": "cet6"
+  },
+  {
+    "word": "straightforward",
+    "pos": "adj.",
+    "gloss": "直截了当",
+    "level": "cet6"
+  },
+  {
+    "word": "dishonesty",
+    "pos": "n.",
+    "gloss": "不诚实",
+    "level": "ielts"
+  },
+  {
+    "word": "alternative",
+    "pos": "n.",
+    "gloss": "替代方案",
+    "level": "cet4"
+  },
+  {
+    "word": "frivolous",
+    "pos": "adj.",
+    "gloss": "轻浮的",
+    "level": "gre"
+  },
+  {
+    "word": "comparable",
+    "pos": "adj.",
+    "gloss": "类似的",
+    "level": "ielts"
+  },
+  {
+    "word": "intuitively",
+    "pos": "adv.",
+    "gloss": "直觉地",
+    "level": "ielts"
+  },
+  {
+    "word": "mediocre",
+    "pos": "adj.",
+    "gloss": "平庸的",
+    "level": "gre"
+  },
+  {
+    "word": "reproduce",
+    "pos": "v.",
+    "gloss": "复制",
+    "level": "cet6"
+  },
+  {
+    "word": "immensely",
+    "pos": "adv.",
+    "gloss": "极大地",
+    "level": "ielts"
+  },
+  {
+    "word": "intersection",
+    "pos": "n.",
+    "gloss": "十字路口",
+    "level": "ielts"
+  },
+  {
+    "word": "stability",
+    "pos": "n.",
+    "gloss": "稳定性",
+    "level": "ielts"
+  },
+  {
+    "word": "similarly",
+    "pos": "adv.",
+    "gloss": "同样地",
+    "level": "cet4"
+  },
+  {
+    "word": "exception",
+    "pos": "n.",
+    "gloss": "例外",
+    "level": "cet4"
+  },
+  {
+    "word": "obstacle",
+    "pos": "n.",
+    "gloss": "障碍",
+    "level": "cet6"
+  },
+  {
+    "word": "fascinating",
+    "pos": "adj.",
+    "gloss": "迷人的",
+    "level": "cet6"
+  },
+  {
+    "word": "accuracy",
+    "pos": "n.",
+    "gloss": "准确性",
+    "level": "cet6"
+  },
+  {
+    "word": "commercial",
+    "pos": "adj.",
+    "gloss": "商业的",
+    "level": "cet4"
+  },
+  {
+    "word": "efficiency",
+    "pos": "n.",
+    "gloss": "效率",
+    "level": "cet6"
+  },
+  {
+    "word": "feedback",
+    "pos": "n.",
+    "gloss": "反馈",
+    "level": "cet4"
+  },
+  {
+    "word": "philosopher",
+    "pos": "n.",
+    "gloss": "哲学家",
+    "level": "cet6"
+  },
+  {
+    "word": "prolific",
+    "pos": "adj.",
+    "gloss": "多产的",
+    "level": "gre"
+  },
+  {
+    "word": "simultaneously",
+    "pos": "adv.",
+    "gloss": "同时地",
+    "level": "ielts"
+  },
+  {
+    "word": "proportionate",
+    "pos": "adj.",
+    "gloss": "成比例的",
+    "level": "gre"
+  },
+  {
+    "word": "uncertainty",
+    "pos": "n.",
+    "gloss": "不确定性",
+    "level": "ielts"
+  },
+  {
+    "word": "regulate",
+    "pos": "v.",
+    "gloss": "监管",
+    "level": "cet6"
+  },
+  {
+    "word": "inconceivable",
+    "pos": "adj.",
+    "gloss": "难以置信的",
+    "level": "gre"
+  },
+  {
+    "word": "reliable",
+    "pos": "adj.",
+    "gloss": "可靠的",
+    "level": "cet4"
+  }
+]

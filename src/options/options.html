@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>wordmark 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div>
+          <h1>wordmark</h1>
+          <p class="sub">把网页里的英文生词就地标注为「英文→中文释义」，不打断阅读流。</p>
+        </div>
+        <div class="hero-meta">
+          <span id="version" class="pill"></span>
+          <span id="save-state" class="pill pill-ok" data-visible="0">已保存</span>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>词典数据</h2>
+        <div class="stats" id="dict-stats">
+          <div class="stat"><span class="stat-value" id="dict-total">–</span><span class="stat-label">离线词条</span></div>
+          <div class="stat"><span class="stat-value" id="dict-basic">–</span><span class="stat-label">基础词</span></div>
+          <div class="stat"><span class="stat-value" id="dict-cet4">–</span><span class="stat-label">CET-4</span></div>
+          <div class="stat"><span class="stat-value" id="dict-cet6">–</span><span class="stat-label">CET-6</span></div>
+          <div class="stat"><span class="stat-value" id="dict-ielts">–</span><span class="stat-label">IELTS</span></div>
+          <div class="stat"><span class="stat-value" id="dict-gre">–</span><span class="stat-label">GRE</span></div>
+        </div>
+        <p class="note">
+          离线词表默认生效、不发任何网络请求。词表未收录的词可以选择用在线接口兜底。
+          「基础词」是几乎人人认识的常用词，默认不标注；把生词线调到它才会一起标出来。
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>标注行为</h2>
+
+        <label class="field field-switch">
+          <span class="field-main">
+            <span class="field-label">总开关</span>
+            <span class="field-hint">关闭后所有页面都不再标注。</span>
+          </span>
+          <input type="checkbox" id="enabled" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">生词线</span>
+            <span class="field-hint">只标注该难度及更难的词，用来控制标注密度。</span>
+          </span>
+          <select id="annotateFrom">
+            <option value="basic">基础词及以上（标注最密）</option>
+            <option value="cet4">CET-4 及以上（推荐）</option>
+            <option value="cet6">CET-6 及以上</option>
+            <option value="ielts">IELTS 及以上</option>
+            <option value="gre">仅 GRE（标注最稀）</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">重复标注</span>
+            <span class="field-hint">同一个词在一页里标一次还是每次都标。</span>
+          </span>
+          <select id="repeatMode">
+            <option value="first">每页只标第一次</option>
+            <option value="all">每次出现都标</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">最短词长</span>
+            <span class="field-hint">短于该长度的词不标注（3 可以滤掉 of / to / in）。</span>
+          </span>
+          <input type="number" id="minWordLength" min="1" max="12" step="1" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">单页释义上限</span>
+            <span class="field-hint">超过上限后停止标注，避免超长页面卡顿。</span>
+          </span>
+          <input type="number" id="maxGlossesPerPage" min="20" max="5000" step="20" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">释义样式</span>
+            <span class="field-hint">括号释义的视觉强调程度。</span>
+          </span>
+          <select id="glossStyle">
+            <option value="subtle">仅着色</option>
+            <option value="underline">下划线</option>
+            <option value="boxed">底色块</option>
+          </select>
+        </label>
+
+        <label class="field field-switch">
+          <span class="field-main">
+            <span class="field-label">显示词性</span>
+            <span class="field-hint">释义前附带 n. / v. / adj. 等标注。</span>
+          </span>
+          <input type="checkbox" id="showPos" />
+        </label>
+
+        <label class="field field-switch">
+          <span class="field-main">
+            <span class="field-label">跟随动态内容</span>
+            <span class="field-hint">无限滚动与 SPA 新加载的内容也会被标注。</span>
+          </span>
+          <input type="checkbox" id="dynamicContent" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>在线释义（可选）</h2>
+        <p class="note note-warn">
+          默认关闭。开启后，离线词表查不到的词会被发送到下面的第三方接口。
+          只发送单词本身，不发送页面内容或浏览记录。
+        </p>
+
+        <label class="field field-switch">
+          <span class="field-main">
+            <span class="field-label">启用在线兜底</span>
+            <span class="field-hint">离线词表优先，只有未收录的词才发起请求。</span>
+          </span>
+          <input type="checkbox" id="online-enabled" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">接口</span>
+            <span class="field-hint">MyMemory 免密钥；自定义接口需为 https 且包含 <code>{word}</code>。</span>
+          </span>
+          <select id="online-provider">
+            <option value="mymemory">MyMemory（免密钥）</option>
+            <option value="custom">自定义接口</option>
+          </select>
+        </label>
+
+        <label class="field" data-when="custom">
+          <span class="field-main">
+            <span class="field-label">接口地址模板</span>
+            <span class="field-hint">例如 <code>https://api.example.com/dict?q={word}</code></span>
+          </span>
+          <input type="url" id="online-customUrl" spellcheck="false" placeholder="https://…{word}…" />
+        </label>
+
+        <label class="field" data-when="custom">
+          <span class="field-main">
+            <span class="field-label">释义字段路径</span>
+            <span class="field-hint">从 JSON 响应里取释义的点路径，如 <code>data.0.gloss</code>。</span>
+          </span>
+          <input type="text" id="online-customPath" spellcheck="false" />
+        </label>
+
+        <div class="field" data-when="custom">
+          <span class="field-main">
+            <span class="field-label">接口权限</span>
+            <span class="field-hint" id="perm-hint">自定义接口需要单独授予域名访问权限。</span>
+          </span>
+          <button type="button" class="btn" id="btn-permission">授予权限</button>
+        </div>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">请求超时</span>
+            <span class="field-hint">毫秒，超时即按「未收录」处理。</span>
+          </span>
+          <input type="number" id="online-timeoutMs" min="1000" max="20000" step="500" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">每分钟请求上限</span>
+            <span class="field-hint">限制在线查询频率，避免触发第三方限流。</span>
+          </span>
+          <input type="number" id="online-maxRequestsPerMinute" min="1" max="120" step="1" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>语境义挑选（可选 · 本机模型）</h2>
+        <p class="note note-warn">
+          默认关闭。开启后，含生词的<strong>整个句子</strong>会发送到下面这个本机地址，
+          用于在多个词典义项里挑出最符合语境的那个。不发往任何第三方。
+        </p>
+
+        <label class="field field-switch">
+          <span class="field-main">
+            <span class="field-label">启用语境义挑选</span>
+            <span class="field-hint">
+              需要先在本机跑起打分服务（<code>prototype/mt-align/xenc/serve.py</code>）。
+              服务不可用时页面照常显示词典义，不会有任何报错。
+            </span>
+          </span>
+          <input type="checkbox" id="sense-enabled" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">本机服务地址</span>
+            <span class="field-hint">默认 <code>http://127.0.0.1:8317</code>。</span>
+          </span>
+          <input type="url" id="sense-endpoint" spellcheck="false" placeholder="http://127.0.0.1:8317" />
+        </label>
+
+        <div class="field">
+          <span class="field-main">
+            <span class="field-label">本机地址权限</span>
+            <span class="field-hint" id="sense-perm-hint">需要单独授予本机地址的访问权限。</span>
+          </span>
+          <button type="button" class="btn" id="btn-sense-permission">授予权限</button>
+        </div>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">请求超时</span>
+            <span class="field-hint">毫秒，超时即保持词典义。</span>
+          </span>
+          <input type="number" id="sense-timeoutMs" min="500" max="60000" step="500" />
+        </label>
+
+        <label class="field">
+          <span class="field-main">
+            <span class="field-label">单页最多挑选</span>
+            <span class="field-hint">本机模型逐条打分，长文页限制条数以免拖慢设备。</span>
+          </span>
+          <input type="number" id="sense-maxPerPage" min="0" max="5000" step="10" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>已知词表 <span class="count" id="known-count">0</span></h2>
+        <p class="note">
+          在页面上点击中文释义即可把词加入这里。词表中的词不会再被标注。
+        </p>
+        <div class="chip-list" id="known-list"></div>
+        <div class="row-inline">
+          <input type="text" id="known-input" placeholder="输入单词，用空格或逗号分隔" spellcheck="false" />
+          <button type="button" class="btn" id="known-add">添加</button>
+          <button type="button" class="btn btn-danger" id="known-clear">清空</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>站点规则 <span class="count" id="blocked-count">0</span></h2>
+        <p class="note">
+          列表中的站点不会标注。支持 <code>example.com</code>（含子域）与 <code>*.example.com</code>（仅子域）。
+        </p>
+        <div class="chip-list" id="blocked-list"></div>
+        <div class="row-inline">
+          <input type="text" id="blocked-input" placeholder="例如 news.example.com" spellcheck="false" />
+          <button type="button" class="btn" id="blocked-add">添加</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>数据与隐私</h2>
+        <p class="note">
+          wordmark 不收集任何遥测数据。设置同步在浏览器账号内；已知词表、在线查询缓存只存在本机。
+        </p>
+        <div class="row-inline row-wrap">
+          <button type="button" class="btn" id="btn-export">导出配置</button>
+          <button type="button" class="btn" id="btn-import">导入配置</button>
+          <button type="button" class="btn" id="btn-clear-cache">清空在线缓存</button>
+          <button type="button" class="btn btn-danger" id="btn-reset">恢复默认设置</button>
+          <input type="file" id="import-file" accept="application/json" hidden />
+        </div>
+        <pre class="log" id="log" hidden></pre>
+      </section>
+    </div>
+
+    <script src="options.js" defer></script>
+  </body>
+</html>

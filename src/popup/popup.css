@@ -1,0 +1,157 @@
+:root {
+  color-scheme: light dark;
+  --fg: #16181d;
+  --fg-dim: #5c6470;
+  --bg: #ffffff;
+  --bg-soft: #f4f6f8;
+  --line: #e3e7ec;
+  --accent: #0b7285;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #e9ecef;
+    --fg-dim: #a1a8b3;
+    --bg: #1b1d21;
+    --bg-soft: #24262b;
+    --line: #33373d;
+    --accent: #63e6be;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 14px;
+  font: 13px/1.5 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.head h1 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.version {
+  font-size: 11px;
+  color: var(--fg-dim);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.stat {
+  padding: 8px 6px;
+  text-align: center;
+  background: var(--bg-soft);
+  border-radius: 8px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-dim);
+}
+
+.rows {
+  border-top: 1px solid var(--line);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row-label small {
+  font-size: 11px;
+  color: var(--fg-dim);
+}
+
+.row input[type="checkbox"] {
+  width: 34px;
+  height: 19px;
+  accent-color: var(--accent);
+}
+
+.row select {
+  max-width: 150px;
+  padding: 3px 6px;
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.hint {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+
+.foot {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 7px 10px;
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--bg-soft);
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--accent);
+  border-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn-primary {
+    color: #10131a;
+  }
+}
