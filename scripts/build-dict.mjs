@@ -23,6 +23,15 @@ const OUT_FILE = path.join(ROOT, 'src', 'data', 'dict.zh.json');
 
 const LEVELS = ['basic', 'cet4', 'cet6', 'ielts', 'gre'];
 const MAX_GLOSS_CHARS = 14;
+const SENSES_DIR = path.join(ROOT, 'data', 'senses');
+const MAX_SENSES_PER_WORD = 6;
+/**
+ * 单个义项的长度上限。
+ *
+ * 这不是「展示用短释义」那条 14 字规则：义项是给打分器做选择题用的候选，
+ * 由生成器把最多 3 个「原子」用 `/` 连接而成、单原子 ≤10 字，所以结构上限是 32。
+ */
+const MAX_SENSE_CHARS = 32;
 
 function fail(message) {
   console.error(`✗ 词典校验失败：${message}`);
@@ -51,6 +60,56 @@ function validate(entry, source) {
     level,
     ...(alt === undefined || alt.length === 0 ? {} : { alt: [...new Set(alt)].sort() }),
   };
+}
+
+/**
+ * 校验 `data/senses/*.json`（多义项表）。
+ *
+ * 它是打分服务的必需输入，坏了就没人能重建「为什么挑中这个义项」，所以和词表一样
+ * 走 fail-fast。它**不并进 dict.zh.json**：义项表由打分服务持有，扩展不打包（见 ADR 0001）。
+ */
+async function checkSenses(heads) {
+  let files;
+  try {
+    files = (await readdir(SENSES_DIR)).filter((name) => name.endsWith('.json')).sort();
+  } catch {
+    // 没有多义项表也能构建：语境义是增强，不是扩展的必需品
+    return null;
+  }
+
+  let words = 0;
+  let senses = 0;
+  for (const file of files) {
+    const raw = await readFile(path.join(SENSES_DIR, file), 'utf8');
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (error) {
+      fail(`data/senses/${file} 不是合法 JSON：${error.message}`);
+    }
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      fail(`data/senses/${file} 顶层必须是 { 词元: [义项…] }`);
+    }
+    for (const [word, list] of Object.entries(parsed)) {
+      if (!/^[a-z]+$/.test(word)) fail(`${file}: 词元必须是小写 ASCII，收到 ${JSON.stringify(word)}`);
+      if (!heads.has(word)) fail(`${file}: ${word} 不在词表里——多义项表不能凭空造词`);
+      if (!Array.isArray(list) || list.length === 0) fail(`${file}: ${word} 的义项必须是非空数组`);
+      if (list.length > MAX_SENSES_PER_WORD) fail(`${file}: ${word} 的义项超过 ${MAX_SENSES_PER_WORD} 条`);
+      const seen = new Set();
+      for (const sense of list) {
+        if (typeof sense !== 'string' || sense.trim() === '') fail(`${file}: ${word} 有空义项`);
+        if (!/[\u4e00-\u9fff]/.test(sense)) fail(`${file}: ${word} 的义项必须含中文，收到 ${JSON.stringify(sense)}`);
+        if ([...sense].length > MAX_SENSE_CHARS) {
+          fail(`${file}: ${word} 的义项超过 ${MAX_SENSE_CHARS} 字：${sense}`);
+        }
+        if (seen.has(sense)) fail(`${file}: ${word} 的义项重复：${sense}`);
+        seen.add(sense);
+      }
+      words += 1;
+      senses += list.length;
+    }
+  }
+  return { files: files.length, words, senses };
 }
 
 async function main() {
@@ -117,6 +176,8 @@ async function main() {
   const byLevel = {};
   for (const level of LEVELS) byLevel[level] = entries.filter((e) => e.level === level).length;
 
+  const senses = await checkSenses(heads);
+
   await writeFile(OUT_FILE, `${JSON.stringify(entries, null, 0)}\n`, 'utf8');
 
   const altForms = entries.reduce((sum, entry) => sum + (entry.alt?.length ?? 0), 0);
@@ -125,6 +186,11 @@ async function main() {
   console.log(
     `  难度分布：${LEVELS.map((level) => `${level} ${byLevel[level]}`).join(' / ')}；不规则变体 ${altForms} 个`,
   );
+  if (senses) {
+    console.log(
+      `  多义项表 ${senses.files} 份：${senses.words} 个词 / ${senses.senses} 条义项（不打包进扩展，由打分服务持有）`,
+    );
+  }
   if (duplicates.length > 0) {
     console.log(`  跳过重复 ${duplicates.length} 条：${duplicates.slice(0, 8).join(', ')}${duplicates.length > 8 ? ' …' : ''}`);
   }

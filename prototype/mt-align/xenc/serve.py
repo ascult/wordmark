@@ -50,7 +50,7 @@ from mlx.utils import tree_unflatten
 
 MODEL_ID = "mlx-community/Qwen2.5-0.5B-Instruct-bf16"
 DEFAULT_ADAPTER = "prototype/mt-align/xenc/adapter.safetensors"
-DEFAULT_SENSES = "prototype/mt-align/senses.json"
+DEFAULT_SENSES = "data/senses/cet4.json"
 LORA_LAYERS = 8
 MAX_TOKENS = 160
 # 单次请求最多处理多少个决策点：防止一个超大请求把内存打满
