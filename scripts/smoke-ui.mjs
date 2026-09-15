@@ -155,7 +155,7 @@ function createChromeMock(options) {  const state = {
           // host 由内容脚本提供——弹窗不再依赖 tab.url（那需要额外权限）
           return {
             ok: true,
-            data: { host: 'example.com', glossed: 12, unique: 7, unresolved: 3, contextual: 5, senseReachable: true, active: true },
+            data: { host: 'example.com', glossed: 12, unique: 7, unresolved: 3, contextual: 5, sense: 'ok', active: true },
           };
         }
         return { ok: true, data: null };

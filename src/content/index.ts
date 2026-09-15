@@ -238,7 +238,7 @@ function statsSnapshot(): PageStats {
     unique: renderer.uniqueCount,
     unresolved: state.unresolved.size,
     contextual: pipeline.contextualCount,
-    senseReachable: senseSelector.reachable() === true,
+    sense: senseSelector.reachable(),
     active: state.active,
   };
 }

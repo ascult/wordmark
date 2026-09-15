@@ -64,14 +64,15 @@ export interface SenseSelectorOptions {
  */
 export interface SensePicker {
   pick(items: readonly SenseCandidate[]): Promise<Map<string, SensePick>>;
-  /**
-   * 最近一次请求有没有到达服务：`null` = 还没试过。
-   *
-   * 语境义是**静默回退**的（服务没起、超时都只是「这次没拿到」），所以「到底通没通」
-   * 必须有个地方能问出来，否则用户无从判断这个功能有没有在工作。可选方法：测试里的假实现不必实现它。
-   */
-  reachable?(): boolean | null;
 }
+
+/**
+ * 语境义服务当下的状态。
+ *
+ * `unknown` 是**必须**存在的第四态：还没发过请求时不能对外宣称「不可达」——
+ * 那是在替一个我们从没联系过的服务下结论。
+ */
+export type SenseReachability = 'unknown' | 'ok' | 'unreachable';
 
 interface SelectResponseItem {
   id?: unknown;
@@ -96,8 +97,8 @@ export class SenseSelector implements SensePicker {
   readonly #settings: () => SenseSettings;
   readonly #request: SenseRequestFn;
   readonly #cache: LruCache<SensePick | null>;
-  /** 最近一次请求的结果；未尝试过为 null。 */
-  #reachable: boolean | null = null;
+  /** 服务是否答过话；没试过就是没试过。 */
+  #reachable: SenseReachability = 'unknown';
 
   constructor(options: SenseSelectorOptions) {
     this.#settings = options.settings;
@@ -109,7 +110,7 @@ export class SenseSelector implements SensePicker {
     return this.#cache.size;
   }
 
-  reachable(): boolean | null {
+  reachable(): SenseReachability {
     return this.#reachable;
   }
 
@@ -149,7 +150,11 @@ export class SenseSelector implements SensePicker {
     for (let start = 0; start < limited.length; start += CHUNK_SIZE) {
       const chunk = limited.slice(start, start + CHUNK_SIZE);
       const fetched = await this.#fetchPicks(settings, chunk);
-      this.#reachable = fetched !== null;
+      // 「可达」取**任一批成功**：长页面上本来就会分好几批（32 题一批），
+      // 用最后一批的成败代表整个服务，会出现「有 40 处换成了语境义、却报服务不可达」这种自相矛盾。
+      // 反过来，只有一次都没成功过才叫不可达——而且一旦不可达就先记下，之后成功会翻回 ok。
+      if (fetched !== null) this.#reachable = 'ok';
+      else if (this.#reachable === 'unknown') this.#reachable = 'unreachable';
       // 整批失败：**什么都不缓存**。把失败也记成「没得选」，会让一次超时永久禁掉这一批——
       // 滚动或重扫时也不再重试（这正是本轮修掉的缺陷）。
       if (fetched === null) continue;

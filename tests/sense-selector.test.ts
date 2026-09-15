@@ -116,14 +116,14 @@ describe('语境义客户端：绝不打扰正文', () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
-  it('记录服务是否可达，供弹窗判断「有没有在生效」', async () => {
+  it('记录服务是否可达，且「没试过」不会被说成「不可达」', async () => {
     const alive = new SenseSelector({
       settings: () => senseSettings(),
       fetchImpl: (async () => jsonResponse(OK_PAYLOAD)) as unknown as typeof fetch,
     });
-    expect(alive.reachable()).toBeNull(); // 还没试过
+    expect(alive.reachable()).toBe('unknown'); // 还没试过，不能替它下结论
     await alive.pick([CANDIDATE]);
-    expect(alive.reachable()).toBe(true);
+    expect(alive.reachable()).toBe('ok');
 
     const dead = new SenseSelector({
       settings: () => senseSettings(),
@@ -132,7 +132,7 @@ describe('语境义客户端：绝不打扰正文', () => {
       }) as unknown as typeof fetch,
     });
     await dead.pick([CANDIDATE]);
-    expect(dead.reachable()).toBe(false);
+    expect(dead.reachable()).toBe('unreachable');
   });
 
   it('按批切片发送，前一批失败不牵连后一批', async () => {
@@ -153,6 +153,8 @@ describe('语境义客户端：绝不打扰正文', () => {
     }));
     await selector.pick(items);
     expect(fetchImpl).toHaveBeenCalledTimes(2);
+    // 一批成功就说明服务是通的：用最后一批的成败代表整个服务会自相矛盾
+    expect(selector.reachable()).toBe('ok');
     const sizes = fetchImpl.mock.calls.map((entry) => {
       const [, init] = entry as unknown as [string, RequestInit];
       return (JSON.parse(String(init.body)).items as unknown[]).length;

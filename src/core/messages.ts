@@ -27,8 +27,8 @@ export interface PageStats {
   unresolved: number;
   /** 本页有多少处释义被换成了语境义。 */
   contextual: number;
-  /** 语境义服务是否可达；未启用或从未尝试过时为 false。 */
-  senseReachable: boolean;
+  /** 语境义服务的状态；`unknown` = 本页还没必要发请求。 */
+  sense: 'unknown' | 'ok' | 'unreachable';
   /** 页面是否被本扩展跳过。 */
   active: boolean;
 }

@@ -47,23 +47,44 @@ function renderStats(info: PageStats | null): void {
   $('stat-contextual').textContent = info ? String(info.contextual) : '–';
 }
 
+/** 弹窗要说的语境义状态：服务侧的三种，加上「没开」「本页不支持」「读不到设置」。 */
+type SenseState = 'off' | 'unsupported' | 'error' | 'unknown' | 'ok' | 'unreachable';
+
+function senseMode(enabled: boolean, info: PageStats | null): SenseState {
+  if (!enabled) return 'off';
+  if (info === null) return 'unsupported';
+  return info.sense;
+}
+
 /**
  * 语境义是**静默回退**的：服务没起、超时、词不在义项表里，页面表现完全一样。
  * 所以「通没通」必须在这里说清楚——否则用户没有任何办法知道这个功能有没有在工作。
+ *
+ * 这里也是这一行文案的**唯一**写入点：散落的 textContent 赋值迟早会和分支判断对不上。
  */
-function renderSenseState(enabled: boolean, info: PageStats | null): void {
+function renderSenseState(mode: SenseState, contextual: number): void {
   const node = $('sense-state');
-  if (!enabled) {
+  if (mode === 'off') {
     node.textContent = '语境义：未开启（可在设置页启用）';
     return;
   }
-  if (info === null) {
+  if (mode === 'unsupported') {
     node.textContent = '语境义：当前页面不支持';
     return;
   }
-  node.textContent = info.senseReachable
-    ? `语境义：服务已连通，本页替换 ${info.contextual} 处`
-    : '语境义：服务不可达，本页按词典义显示';
+  if (mode === 'error') {
+    node.textContent = '语境义：无法读取设置';
+    return;
+  }
+  if (mode === 'unknown') {
+    // 这一页还没出现需要挑选的词，所以「不可达」是替一个从没联系过的服务下结论
+    node.textContent = '语境义：本页暂无可挑选的词';
+    return;
+  }
+  node.textContent =
+    mode === 'ok'
+      ? `语境义：服务已连通，本页替换 ${contextual} 处`
+      : '语境义：服务不可达，本页按词典义显示';
 }
 
 async function main(): Promise<void> {
@@ -79,7 +100,7 @@ async function main(): Promise<void> {
   const res = await sendRequest<StateSnapshot>({ type: 'wordmark:get-state', host });
   if (!res.ok) {
     $('hint').textContent = '无法读取设置，请重新打开扩展。';
-    $('sense-state').textContent = '语境义：无法读取设置';
+    renderSenseState('error', 0);
     renderStats(info);
     return;
   }
@@ -94,7 +115,7 @@ async function main(): Promise<void> {
   siteToggle.disabled = !supported;
   siteToggle.title = supported ? '' : '当前页面不支持内容脚本';
   levelSelect.value = state.settings.annotateFrom;
-  renderSenseState(state.settings.sense.enabled, info);
+  renderSenseState(senseMode(state.settings.sense.enabled, info), info?.contextual ?? 0);
 
   globalToggle.addEventListener('change', () => {
     void sendRequest({ type: 'wordmark:set-settings', patch: { enabled: globalToggle.checked } });
@@ -130,19 +151,22 @@ async function main(): Promise<void> {
       }
       const fresh = await fetchPageInfo(tabId);
       renderStats(fresh);
-      renderSenseState(state.settings.sense.enabled, fresh);
+      renderSenseState(
+        senseMode(state.settings.sense.enabled, fresh),
+        fresh?.contextual ?? 0,
+      );
     })();
   });
 
   if (!supported) {
     $('hint').textContent = '当前页面（如新标签页、chrome:// 页面）不支持内容脚本。';
-    $('sense-state').textContent = '语境义：当前页面不支持';
+    renderSenseState('unsupported', 0);
     renderStats(null);
     return;
   }
 
   renderStats(info);
-  renderSenseState(state.settings.sense.enabled, info);
+  renderSenseState(senseMode(state.settings.sense.enabled, info), info?.contextual ?? 0);
 }
 
 void main();

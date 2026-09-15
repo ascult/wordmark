@@ -57,7 +57,13 @@ export class AnnotationPipeline {
     return this.#processing;
   }
 
-  /** 本页用上语境义的处数。 */
+  /**
+   * 本页用上语境义的处数。
+   *
+   * **已知近似**：数的是「成功回填的次数」。回填后文本与词典义恰好相同的那一次也会计入，
+   * 而点了「已认识」把该词释义移除之后也不会回退——所以它只会偏大，不会偏小。
+   * 要精确得让渲染器按「仍在页面上、且被标记为语境义的记录」来数（下一步）。
+   */
   get contextualCount(): number {
     return this.#contextual;
   }
